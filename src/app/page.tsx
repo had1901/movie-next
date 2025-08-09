@@ -1,15 +1,19 @@
-import Image from "next/image";
-import Link from "next/link";
+import Slider from "@/components/Slider";
+import { MovieHomeResponse } from "@/interface/interface";
+const BASE_URL = process.env.NEXT_PUBLIC_API_URL
 
-export default function Home() {
+// bg-[#292929]
+const handleGetMovieHome = async (): Promise<MovieHomeResponse> => {
+  const res = await fetch(`${BASE_URL}/v1/api/home`)
+  if (!res.ok) throw new Error('Lỗi API')
+  return res.json()
+}
+export default async function Home() {
+  const result = await handleGetMovieHome()
+
   return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        
-      </footer>
+    <div className="w-full py-6">
+      <Slider result={result} />
     </div>
   )
 }
