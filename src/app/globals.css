@@ -38,8 +38,12 @@ body {
   --bg-main-gradient: linear-gradient(to right, #3636366c, #8585857c);
   --border-color: #bebebe1a;
   --bg-label: #505050;
+  --bg-opacity: #77777786;
+  --bg-sub: #4d4d4d67;
   --bg-main-color: #ffd779;
+  --text-main-yellow: #ffd779;
   --text-main-color: #1d1d1d;
+  --text-sub-color: rgb(179, 179, 179);
 }
 
 .swiper-scrollbar {
@@ -89,4 +93,19 @@ body {
   font-size: 3em;
   background-color: #ff4747;
   border-radius: 50%;
+}
+
+.swiper-button-prev{
+  left: -34px !important;
+}
+.swiper-button-next {
+  right: -34px !important;
+  
+}
+
+.swiper-button-prev::after,
+.swiper-button-next::after {
+  font-size: 30px !important;
+  color: white;
+  font-weight: 700 !important;
 }

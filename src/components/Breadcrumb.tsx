@@ -23,7 +23,7 @@ function Breadcrumb({ breadcrumb }:{ breadcrumb: Array<Breadcrumb> }) {
             </i>
           </Link>
         </li>  
-        {breadcrumb.map((item, index) => (
+        {breadcrumb?.length > 0 && breadcrumb.map((item, index) => (
           <li key={index}>
             <Link href={'/'} className='flex items-center'>
               <span>{item.name}</span>

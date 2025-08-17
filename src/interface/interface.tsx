@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 
 
 export interface MovieHomeResponse {
@@ -7,14 +8,14 @@ export interface MovieHomeResponse {
       descriptionHead: string
       og_type: string
       og_image: string[]
-      [key: string]: unknown
+      [key: string]: any
     }
     items: {
       name: string
       slug: string
       thumb_url: string
-      [key: string]: string
+      [key: string]: any
     }[]
-    [key: string]: unknown
+    [key: string]: any
   }
 }

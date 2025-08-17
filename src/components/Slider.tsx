@@ -1,96 +1,106 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @next/next/no-img-element */
 'use client'
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useMemo, useRef, useState } from 'react'
 import Image from 'next/image';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import 'swiper/css/bundle';
 import { MovieHomeResponse } from '@/interface/interface';
-import { Pagination, Navigation, Autoplay } from "swiper/modules";
-import Link from 'next/link';
+import { Pagination, Navigation, Autoplay, Parallax, EffectFade, Thumbs, FreeMode  } from "swiper/modules";
+import 'swiper/css/bundle';
+import 'swiper/css/navigation';
+import 'swiper/css/thumbs';
+import Poster from './Poster';
 
 const bg = 'https://www.themoviedb.org/assets/2/v4/misc/trending-bg-39afc2a5f77e31d469b25c187814c0a2efef225494c038098d62317d923f8415.svg'
-function Slider({ result }:{ result: MovieHomeResponse }) {
 
-    const [fade, setFade] = useState(true)
-    
 
-    useEffect(() => {
-        const interval = setInterval(() => {
-            setFade(!fade) 
-        }, 4000)
-    return () => clearInterval(interval)
-    }, [fade])
+function Slider({ result, hasMark }:{ result: MovieHomeResponse, hasMark: boolean }) {
+    const swiperRef = useRef<any>(null)
+    const [currentSlide, setCurrentSlide] = useState(0)
+    const [thumbsSwiper, setThumbsSwiper] = useState<any>(null)
+    const data = hasMark ? result.data.items : result.data.items.slice(0,15)
 
+    const styleCustomMark = {
+        maskImage: 'linear-gradient(90deg, transparent 10px, #292929 10%, #292929 80%, transparent 99%)',
+        WebkitMaskImage: 'linear-gradient(90deg, transparent 10px, #292929 10%, #292929 80%, transparent 99%)',
+    }
+    const handleChangeSlide = (index: number) => {
+        swiperRef.current?.slideToLoop(index)
+        setCurrentSlide(index)
+        console.log('index', index)
+    }
   return (
-    <div className={`relative rounded-3xl px-4`}>
-        <div 
-            className={`bg-bottom-left ${fade ? 'opacity-0' : 'opacity-100 pointer-events-none'} absolute top-0 left-0 right-0 -bottom-[100px] bg-no-repeat bg-cover transition-all duration-2500`} 
-            style={{ backgroundImage: `url(${bg})` }}
-        ></div>
-        <div 
-            className={`bg-bottom-right ${fade ? 'opacity-100' : 'opacity-0 pointer-events-none'} absolute top-0 left-0 right-0 -bottom-[100px] bg-no-repeat bg-cover transition-all duration-2500`} 
-            style={{ backgroundImage: `url(${bg})` }}
-        ></div>
+    <div className={`relative ${hasMark ? 'h-[420px] md:h-[600px] xl:h-[900px]' : 'h-[300px] md:h-[400px] xl:h-[500px]'} rounded-3xl`}>
         <Swiper
-            modules={[Pagination, Navigation, Autoplay]}
-            spaceBetween={24}
-            slidesPerView={6}
-            // autoplay={{ delay: 4000, disableOnInteraction: false }}
-            // navigation={{
-            //     nextEl: '.swiper-button-next',
-            //     prevEl: '.swiper-button-prev',
-            // }}
-            // navigation
-            // pagination={{ clickable: true }}
-            // onSlideChange={() => console.log('slide change')}
+            onSwiper={(swiper) => (swiperRef.current = swiper)}
+            modules={[Pagination, Navigation, Autoplay, Parallax, EffectFade, Thumbs]}
+            thumbs={thumbsSwiper && !thumbsSwiper.destroyed ? { swiper: thumbsSwiper } : undefined}
+            slidesPerView={1}
+            parallax={true}
+            effect="fade"
+            fadeEffect={{ crossFade: true }}
+            autoplay={{ delay: 4000, disableOnInteraction: false }}
+            grabCursor
             scrollbar={{ draggable: true }}
-            className='h-full no-scrollbar !px-[10px]'
-            breakpoints={{
-                320: {
-                    slidesPerView: 1,
-                },
-                640: {
-                    slidesPerView: 2,
-                },
-                768: {
-                    slidesPerView: 3,
-                },
-                1024: {
-                    slidesPerView: 4,
-                },
-                1366: {
-                    slidesPerView: 6,
-                },
+            speed={800}
+            loop
+            className='h-full no-scrollbar'
+            onSlideChange={(swiper) => {
+                console.log('swiper', swiper.realIndex)
+                setCurrentSlide(swiper.realIndex)
+                if (thumbsSwiper && !thumbsSwiper.destroyed) {
+                    // đẩy thumbnail tới vị trí tương ứng
+                    thumbsSwiper.slideToLoop(swiper.realIndex) 
+                }
             }}
         >
-            {result.data.items.map((item, index) => (
-                <SwiperSlide key={index} className='h-full'>
-                    <Link href={`/detail-movie/${item.slug}`} className='aspect-[2/3] inline-block w-full cursor-pointer'>
-                        <div className='relative h-full'>
-                            <Image 
-                                src={`${result.data.APP_DOMAIN_CDN_IMAGE}/uploads/movies/${item.thumb_url}`} 
-                                // width={100} 
-                                // height={100} 
-                                sizes="auto"
-                                fill
-                                alt="thumbnail"
-                                style={{objectFit: "cover"}}
-                                // className='select-none pointer-events-none rounded-3xl object-cover w-full h-full'
-                                className='select-none pointer-events-none rounded-3xl object-cover '
-                            />
-                        </div>
-                        <h2 className='text-white font-medium pt-2 px-2 line-clamp-1'>{item.name}</h2>
-                        <h3 className='text-white text-[14px] px-2 line-clamp-1'>{item.origin_name}</h3>
-                        <div className='flex items-center justify-between absolute top-2 -left-[10px] -right-[10px] z-10'>
-                            <span className='text-white font-medium bg-linear-to-bl from-violet-500 to-fuchsia-500 rounded-r-sm text-[12px] px-1 py-[2px] after-mask-left'>{`${item.quality} + ${item.lang}`}</span>
-                        </div>
-                        <span className='text-white absolute top-2 right-[10px] z-10 font-medium bg-linear-to-bl from-violet-500 to-fuchsia-500 rounded-lg text-[12px] px-2 py-1'>{item.episode_current}</span>
-                    </Link>
+            {data.map((item, index) => (
+                <SwiperSlide key={index} className='h-full' >
+                    <Poster data={item} hasMark={hasMark} textSize='24px'/>
                 </SwiperSlide>
             ))}
         </Swiper>
+        <div 
+            className={`absolute left-[100px] right-[100px] ${hasMark ? 'bottom-[0]' : '-bottom-10'}  z-20`} 
+            style={hasMark ? styleCustomMark : {}}
+        >
+            <Swiper 
+                modules={[Pagination, Navigation, Thumbs]}
+                onSwiper={setThumbsSwiper}
+                spaceBetween={10}
+                slidesPerView={10}
+                watchSlidesProgress
+                // slideToClickedSlide={true}
+                grabCursor
+                loop
+                centeredSlides={hasMark}      
+                className='h-full'
+                scrollbar={{ draggable: true }}
+                navigation={{
+                    nextEl: '.swiper-button-next',
+                    prevEl: '.swiper-button-prev',
+                }}
+            >
+                {data.map((item, index) =>  (
+                    <SwiperSlide key={index} onClick={() => handleChangeSlide(index)}>
+                        <div className={`relative rounded-xl overflow-hidden cursor-pointer border-2 ${hasMark ? 'min-h-24 w-full' : 'aspect-[2/3]'} ${currentSlide === index ? 'border-yellow-400' : 'border-gray-300/20'}`}>
+                            <Image 
+                                src={`https://img.ophim.live/uploads/movies/${hasMark ? item.poster_url : item.thumb_url}`} 
+                                alt="thumbnail-slide" 
+                                className='object-cover select-none' 
+                                fill 
+                                sizes='100vw'
+                            />
+                        </div>
+                    </SwiperSlide>
+                ))}
+            </Swiper>
+            <button className='swiper-button-prev'></button>
+            <button className='swiper-button-next'></button>
+        </div>
     </div>
   )
 }
+
 
 export default Slider

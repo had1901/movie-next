@@ -46,7 +46,7 @@ function Header() {
         }
     },[theme])
   return (
-    <header className={`${scrolled > 50 ? 'bg-[#0e0e0e]/40 backdrop-blur-xl' : 'bg-[#0e0e0e]'} shadow-2xl sticky z-20 top-0 transition`}>
+    <header className={`${scrolled > 50 ? 'bg-[#0e0e0e]/40 backdrop-blur-xl' : 'bg-transparent'} fixed z-[999] inset-x-0 top-0 transition`}>
         <div className="container mx-auto px-4">
             <div className="flex items-center justify-between gap-6 h-16">
                 <Link href={'/'}>
@@ -65,11 +65,11 @@ function Header() {
                     ))}
                 </div>
 
-                <div className="flex relative ">
+                <div className="flex relative text-white ">
                     <input 
-                    type="search" 
-                    placeholder="Search..."
-                    className="bg-white outline-none border-none rounded-[14px] py-2 pl-7 pr-2 min-w-[300px] text-[15px]"
+                        type="search" 
+                        placeholder="Search..."
+                        className="bg-(--bg-opacity) outline-none border-none rounded-[14px] py-2 pl-7 pr-2 min-w-[300px] text-[15px]"
                     />
                     <div className="absolute top-1/2 left-2 -translate-y-1/2">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-4">
@@ -77,12 +77,12 @@ function Header() {
                     </svg>
                     </div>
                 </div>
-                <div className="h-full">
+                {/* <div className="h-full">
                     <select value={theme} onChange={(e) => setTheme(e.target.value)} className='text-white border-amber-100'>
                         <option value="light">Sáng</option>
                         <option value="dark">Tối</option>
                     </select>
-                </div>
+                </div> */}
             </div>
         </div>
     </header>

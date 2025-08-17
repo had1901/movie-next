@@ -32,11 +32,9 @@ export default function RootLayout({ children, params }: Readonly<{ children: Re
     <html lang="en" data-theme="dark">
       <body className={`${robotoFont.variable} antialiased dark:bg-[#292929]`}>
         <Header />
-        <div className="container mx-auto">
-          <ViewTransition key={params?.slug || 'root'}>
-            {children}
-          </ViewTransition>
-        </div>
+        <ViewTransition key={params?.slug || 'root'}>
+          {children}
+        </ViewTransition>
       </body>
     </html>
   )

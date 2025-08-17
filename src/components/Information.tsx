@@ -1,21 +1,11 @@
-'use client'
 /* eslint-disable @typescript-eslint/no-explicit-any */
-
-import Image from 'next/image'
-import React, { useEffect } from 'react'
+import React from 'react'
 import LabelSub from './LabelSub'
 import ButtonViewDetail from './ButtonViewDetail'
-import { useMovieLink } from '@/store/store'
-import StreamingPlayer from './StreamingPlayer'
-import Content from './Content'
-import Information from './Information'
 
-function Poster({ data, hasMark = true, textSize }:{ data: any, hasMark: boolean, textSize: string }) {
-    // const movieLink = useMovieLink(state => state.link)
-    const reset = useMovieLink(state => state.reset)
-    // console.log('Poster', data)
-    
-    const icons = [
+function Information({ data }:{ data: any }) {
+
+  const icons = [
       {
         label: data.year,
         icon: () => {
@@ -105,83 +95,54 @@ function Poster({ data, hasMark = true, textSize }:{ data: any, hasMark: boolean
       //   }
       // },
     ]
-
-    const styleCustomY = {
-          maskImage: 'linear-gradient(90deg, transparent 0, rgba(0, 0, 0, 0.2) 15%, #292929 40%, #292929 80%, transparent 100%)',
-          WebkitMaskImage: 'linear-gradient(90deg, transparent 0, rgba(0, 0, 0, 0.2) 15%, #292929 40%, #292929 80%, transparent 100%)',
-        }
-    const styleCustomX = {
-            WebkitMaskImage: 'linear-gradient(0deg, transparent 0%, #292929 20%, #292929 80%, transparent)',
-            maskImage: 'linear-gradient(0deg, transparent 0%, #292929 20%, #292929 80%, transparent)',
-            WebkitMaskSize: '100% 100%',
-            maskSize: '100% 100%',
-            
-          }
-    useEffect(() => {
-        return () => reset()
-    },[reset])
-
   return (
-    <section className='relative h-full overflow-hidden rounded-2xl'>
-      <div className='h-full' style={hasMark ? styleCustomY : {}}>
-        <div className='relative flex h-full text-white overflow-hidden' style={hasMark ? styleCustomX : {}}>
-          <div 
-            className='w-full h-full bg-cover bg-center' 
-            data-swiper-parallax-x="-30"
-            style={{
-            backgroundImage: ` url(https://img.ophim.live/uploads/movies/${data.poster_url})`,
-            backgroundSize: '100%',
-            backgroundPosition: 'right'
-          }}>
-            <div style={{backgroundImage: `url(/dot.png)`, backgroundRepeat: 'repeat', backgroundSize: '3px'}} className='absolute inset-0 opacity-50 w-full h-full'></div>
-          </div>
+    <div data-swiper-parallax-x="30" className={`'absolute inset-[180px] text-white flex flex-col justify-center gap-2 z-50'`}>
+         
+        <div className='flex items-center gap-2'>
+          <h1 className='inline font-bold text-2xl sm:text-2xl md:text-2xl lg:text-3xl xl:text-3xl 2xl:text-4xl bg-gradient-to-r from-(--text-main-yellow) to-[#9457ff] bg-clip-text text-transparent'>
+              {data.name}
+          </h1 >
+          {data.chieurap && <span className='bg-gradient-to-r from-[#3f57ca] to-[#c650c0] py-[2px] px-1 rounded text-xs mt-1 inline-block'>Phim chiếu rạp</span>}
         </div>
-      </div>
 
-      {/* <Information data={data}/> */}
-      <div className={`${hasMark ? '' : 'absolute inset-0 bg-gradient-to-r from-black to-bg-transparent'}`}>
-        <div data-swiper-parallax-x="30" className={`absolute inset-[10%] text-white flex flex-col justify-center gap-2 z-50`}>
-           
-          <div className='flex items-center gap-2'>
-            <h1 className='inline font-bold text-2xl sm:text-2xl md:text-2xl lg:text-3xl xl:text-3xl 2xl:text-4xl bg-gradient-to-r from-(--text-main-yellow) to-[#9457ff] bg-clip-text text-transparent' style={{ fontSize: hasMark ? '' : textSize}}>
-                {data.name}
-            </h1 >
-            {data.chieurap && <span className='bg-gradient-to-r from-[#3f57ca] to-[#c650c0] py-[2px] px-1 rounded text-xs mt-1 inline-block'>Phim chiếu rạp</span>}
-          </div>
-  
-          <h2 className='font-medium text-[18px]'>{data.origin_name}</h2>
-          
-          <div className='flex items-center gap-2 mt-1'>
-            {data.category.map((item: any, index: number) => (
-                <span key={index} className=' py-1 px-2 rounded text-sm' style={{ backgroundImage: 'var(--bg-main-gradient)'}}>{item.name}</span>
-            ))}
-          </div>
-  
-          <div className='flex items-center flex-wrap gap-4 mt-1'>
-            {icons.slice(0,3).map((item, index) => (
-                <LabelSub key={index} icon={item.icon()} label={item.label} />
-            ))}
-            {icons.slice(3).map((item, index) => (
-                <LabelSub key={index} icon={item.icon()} label={item.label} />
-            ))}
-          </div>
-  
-          <p className='text-md mt-1 text-shadow-heading text-justify'>
-            <span  className='font-bold'>Đang phát: </span>
-            <span style={{ backgroundImage: 'var(--bg-main-gradient)'}} className='font-semibold ml-1 py-1 px-2 rounded'>{data.episode_current === 'Trailer' ? 'Chưa phát hành' : data.episode_current}</span>
-          </p>
-  
-          <div className='flex items-center gap-10'>
-          {buttonsView.map((btn, i) => (
-              <ButtonViewDetail key={i} icon={btn.icon()} label={btn.label} type={btn.type} originalURL={data.trailer_url} slug={data.slug} />
+        <h2 className='font-medium text-[18px]'>{data.origin_name}</h2>
+        
+        <div className='flex items-center gap-2 mt-2'>
+          {data.category.map((item: any, index: number) => (
+              <span key={index} className=' py-1 px-2 rounded text-sm' style={{ backgroundImage: 'var(--bg-main-gradient)'}}>{item.name}</span>
           ))}
-          </div>
-          
+        </div>
+
+        <div className='flex items-center flex-wrap gap-4 mt-6'>
+          {icons.slice(0,3).map((item, index) => (
+              <LabelSub key={index} icon={item.icon()} label={item.label} />
+          ))}
+          {icons.slice(3).map((item, index) => (
+              <LabelSub key={index} icon={item.icon()} label={item.label} />
+          ))}
+        </div>
+
+        
+        <p className='text-md mt-3 text-shadow-heading text-justify'>
+          <span  className='font-bold'>Đang phát: </span>
+          <span style={{ backgroundImage: 'var(--bg-main-gradient)'}} className='font-semibold ml-1 py-1 px-2 rounded'>{data.episode_current === 'Trailer' ? 'Chưa phát hành' : data.episode_current}</span>
+        </p>
+
+        {/* <p data-swiper-parallax-x="-50" className='text-md mt-3 text-shadow-heading text-justify'>
+          <span className='font-bold'>Tổng: </span>
+          <span style={{ backgroundImage: 'var(--bg-main-gradient)'}} className='font-semibold ml-1 py-1 px-2 rounded'>{data.episode_total}</span>
+        </p> */}
+
+        {/* <div className='w-3/4 mt-3'>
+          <Content content={data.content} />
+        </div> */}
+        <div className='flex items-center gap-10'>
+        {buttonsView.map((btn, i) => (
+            <ButtonViewDetail key={i} icon={btn.icon()} label={btn.label} type={btn.type} originalURL={data.trailer_url} slug={data.slug} />
+        ))}
         </div>
       </div>
-    </section>
-        
   )
 }
 
-export default Poster
+export default Information
