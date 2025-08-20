@@ -14,7 +14,7 @@ import Poster from './Poster';
 const bg = 'https://www.themoviedb.org/assets/2/v4/misc/trending-bg-39afc2a5f77e31d469b25c187814c0a2efef225494c038098d62317d923f8415.svg'
 
 
-function Slider({ result, hasMark }:{ result: MovieHomeResponse, hasMark: boolean }) {
+function Slider({ result, ratio = 'aspect-[2/3]', hasMark }:{ result: MovieHomeResponse, ratio: string, hasMark: boolean }) {
     const swiperRef = useRef<any>(null)
     const [currentSlide, setCurrentSlide] = useState(0)
     const [thumbsSwiper, setThumbsSwiper] = useState<any>(null)
@@ -83,13 +83,13 @@ function Slider({ result, hasMark }:{ result: MovieHomeResponse, hasMark: boolea
             >
                 {data.map((item, index) =>  (
                     <SwiperSlide key={index} onClick={() => handleChangeSlide(index)}>
-                        <div className={`relative rounded-xl overflow-hidden cursor-pointer border-2 ${hasMark ? 'min-h-24 w-full' : 'aspect-[2/3]'} ${currentSlide === index ? 'border-yellow-400' : 'border-gray-300/20'}`}>
+                        <div className={`relative rounded-xl overflow-hidden cursor-pointer border-2 hover:opacity-90 ${hasMark ? 'min-h-24 w-full' : ratio} ${currentSlide === index ? 'border-yellow-400' : 'border-gray-300/20'}`}>
                             <Image 
                                 src={`https://img.ophim.live/uploads/movies/${hasMark ? item.poster_url : item.thumb_url}`} 
                                 alt="thumbnail-slide" 
                                 className='object-cover select-none' 
                                 fill 
-                                sizes='100vw'
+                                sizes='100%'
                             />
                         </div>
                     </SwiperSlide>

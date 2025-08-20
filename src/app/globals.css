@@ -9,6 +9,7 @@
   /* --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono); */
   --font-main: var(--font-roboto);
+  --font-nosifer: var(--font-nosifer);
 }
 
 body {
@@ -44,6 +45,16 @@ body {
   --text-main-yellow: #ffd779;
   --text-main-color: #1d1d1d;
   --text-sub-color: rgb(179, 179, 179);
+}
+
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+/* Ẩn arrows cho Firefox */
+input[type="number"] {
+  -moz-appearance: textfield;
 }
 
 .swiper-scrollbar {
@@ -108,4 +119,95 @@ body {
   font-size: 30px !important;
   color: white;
   font-weight: 700 !important;
+}
+
+
+/* Animation */
+.animate-show{
+  animation: animateScale both;
+  animation-timeline: view();
+  animation-range: entry 20% cover 100%;
+}
+
+@keyframes animateScale {
+  from {
+    transform: translateY(100px);
+    opacity: 0;
+  } 
+  to {
+    transform: translateY(0);
+    opacity: 1;
+
+  }
+}
+
+
+/* Hover after movie card */
+.poster-hover::before{
+  content: '';
+  position: absolute;
+  background-image: url(https://cdn.pixabay.com/photo/2016/07/20/22/33/vajdahunyadvar-1531470_960_720.jpg);
+  background-repeat: no-repeat;
+  background-size: cover;
+  z-index: 20;
+  inset: 0;
+  -webkit-clip-path: polygon(0 0, 100% 0%, 50% 100%, 0% 100%);
+  clip-path: polygon(0 0, 100% 0%, 0 100%, 0% 100%);
+  border-right: 1px solid red;
+  border-radius: 24px;
+  transition: all ease-in .3s;
+  visibility: hidden;
+  opacity: 0;
+
+}
+
+.poster-hover::after{
+  content: '';
+  position: absolute;
+  background-image: url(https://cdn.pixabay.com/photo/2020/02/05/22/17/vendetta-4822543__340.jpg);
+  background-repeat: no-repeat;
+  background-size: cover;
+  z-index: 20;
+  inset: 0;
+  -webkit-clip-path: polygon(50% 0, 100% 0%, 100% 100%, 0% 100%);
+  clip-path: polygon(100% 0, 100% 0%, 100% 100%, 0% 100%);
+  border-radius: 24px;
+  transition: all ease-in .3s;
+  visibility: hidden;
+  opacity: 0;
+}
+/* .poster-hover::before:hover{
+  width: 75%;
+}
+.poster-hover::after:hover{
+  width: 75%;
+  
+} */
+.poster-hover:hover ~ .poster-hover::before, .poster-hover::after{
+  visibility: visible;
+  opacity: 1;
+
+}
+
+
+
+/* Scrollbar */
+.custom-scrollbar {
+  scrollbar-width: thin;             /* Firefox */
+  scrollbar-color: #c0c0c0 transparent;
+}
+
+/* Webkit (Chrome, Edge, Safari) */
+.custom-scrollbar::-webkit-scrollbar {
+  height: 8px; /* horizontal scrollbar */
+  width: 8px;  /* vertical scrollbar */
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background-color: #c0c0c0;  /* màu của thumb */
+  border-radius: 9999px;      /* bo tròn */
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
 }

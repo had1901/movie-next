@@ -9,20 +9,12 @@ import Poster from '@/components/Poster'
 import CustomVideo from '@/components/CustomPlayer'
 import StreamingPlayer from '@/components/StreamingPlayer'
 import { useParams } from 'next/navigation'
-import { useMovieLink } from '@/store/store'
+import { useLight, useMovieLink } from '@/store/store'
 import Link from 'next/link'
+import { handleGetMovie } from '@/utils/fetchApi'
 const BASE_URL = process.env.NEXT_PUBLIC_API_URL
 
-const handleGetMovie = async ( url: string ): Promise<any> => {
-  try {
-    const res = await fetch(url)
-    if (!res.ok) throw new Error('Lỗi API Movie')
-    return res.json()
-  } catch (err) {
-    console.error('Lỗi khi gọi API:', err, url)
-    return <div>Không thể tải dữ liệu phim. Vui lòng thử lại sau.</div>
-  }
-}
+
 
 function DetailMovie() {
     const { slug } = useParams()
@@ -31,9 +23,10 @@ function DetailMovie() {
     const [poster, setPoster] = useState<any>({})
     const [loading, setLoading] = useState(true)
     const movieLink = useMovieLink(state => state.link)
+    const reset = useMovieLink(state => state.reset)
     
     console.log('Phim', movie)
-    console.log('Poster', poster)
+    // console.log('Poster', poster)
 
     // Fix: Thêm optional chaining và kiểm tra data tồn tại
     const domainImages = () => {
@@ -85,7 +78,16 @@ function DetailMovie() {
       })()
     }, [slug])
 
-    // Loading state
+    useEffect(() => {
+        return () => reset()
+    },[reset])
+
+    useEffect(() => {
+        if(movie && movie.data && movie.data?.seoOnPage?.titleHead){
+          document.title = movie.data?.seoOnPage?.titleHead
+        }
+    },[movie])
+    
     if (loading) {
       return (
         <div className='text-white py-3 mx-40'>
@@ -97,17 +99,17 @@ function DetailMovie() {
     }
 
   return (
-    <div className='text-white py-3 mx-40'>
+    <div className='text-white mx-20'>
       {/* <Breadcrumb breadcrumb={movie?.data?.breadCrumb}/> */}
-
+      {/* <MetaData /> */}
       <section className='relative h-[800px] w-full aspect-video '>
-        <div className='mt-14'><StreamingPlayer /></div>
+        <div className=''><StreamingPlayer /></div>
         <div className={`${movieLink ? 'hidden' : 'relative w-full h-full'}`} style={styleCustomY}>
-          {img.length > 0 && domainImages() !== '/' && (
-            <Image 
+          {img.length > 0 && domainImages() !== '/' ? 
+          (<Image 
               src={`${domainImages()}${img[Math.floor(Math.random() * Math.min(img.length, 10))]}`} 
               fill 
-              sizes='auto' 
+              sizes='100%' 
               alt={`Poster ${movie?.data?.item?.poster_url || 'movie'}`} 
               className='object-cover w-full h-full'
               style={{
@@ -121,21 +123,39 @@ function DetailMovie() {
               onError={(e) => {
                 console.log('Image load error:', e)
               }}
-            />
-          )}
+            />)
+          : (<Image 
+              src={`${movie?.data?.APP_DOMAIN_CDN_IMAGE}/uploads/movies/${movie?.data?.item?.poster_url}`} 
+              fill 
+              sizes='100%' 
+              alt={`Poster ${movie?.data?.item?.poster_url || 'movie'}`} 
+              className='object-cover w-full h-full'
+              style={{
+                WebkitMaskImage: "linear-gradient(to bottom, #292929 50%, rgba(0,0,0,0) 100%)",
+                WebkitMaskRepeat: "no-repeat",
+                WebkitMaskSize: "100% 100%",
+                maskImage: "linear-gradient(to bottom, #292929 50%, rgba(0,0,0,0) 100%)",
+                maskRepeat: "no-repeat",
+                maskSize: "100% 100%"
+              }}
+              onError={(e) => {
+                console.log('Image load error:', e)
+              }}
+            />)
+          }
           <div style={{backgroundImage: `url(/dot.png)`, backgroundRepeat: 'repeat', backgroundSize: '3px'}} className='absolute inset-0 opacity-50 w-full h-full'></div>
         </div>
         
         <div className={`${movieLink ? 'mt-10' : 'absolute top-[75%]'} transition-all duration-500`}>
-          <div className='flex flex-wrap px-4'>
+          <div className='flex flex-wrap px-4 py-8'>
             <div className='w-3/4 flex flex-wrap h-fit border-r-2 border-(--border-color) px-4'>
-              <div className='flex gap-1 pb-10'>
+              <div className='w-full flex gap-1 pb-10'>
                 <div className='flex 1 w-[150px] h-[250px] relative mr-6 py-4'>
                   {/* Thumbnail image code here */}
                   <Image 
                     src={`${movie?.data?.APP_DOMAIN_CDN_IMAGE}/uploads/movies/${movie?.data?.item?.thumb_url}`} 
                     fill
-                    sizes='auto'
+                    sizes='100%'
                     placeholder="blur"
                     blurDataURL={`${movie?.data?.APP_DOMAIN_CDN_IMAGE}/uploads/movies/${movie?.data?.item?.thumb_url}`}
                     alt='Thumbnail Movie'
@@ -218,7 +238,7 @@ function DetailMovie() {
                       </i>
                       <Link href={'#episodes'} style={{ scrollBehavior: 'smooth' }}>Xem ngay</Link>
                     </button >
-                    <button className='flex items-center justify-center gap-2 bg-(--bg-main-color) min-w-[120px] w-fit p-3 rounded-full cursor-pointer'>
+                    <button className='flex items-center justify-center gap-2 min-w-[120px] w-fit p-3 rounded-full cursor-pointer'>
                       <i>
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="size-5">
                           <path d="M3.25 4A2.25 2.25 0 0 0 1 6.25v7.5A2.25 2.25 0 0 0 3.25 16h7.5A2.25 2.25 0 0 0 13 13.75v-7.5A2.25 2.25 0 0 0 10.75 4h-7.5ZM19 4.75a.75.75 0 0 0-1.28-.53l-3 3a.75.75 0 0 0-.22.53v4.5c0 .199.079.39.22.53l3 3a.75.75 0 0 0 1.28-.53V4.75Z" />
@@ -233,9 +253,9 @@ function DetailMovie() {
                   </div>
               </div>
               </div>
-              <div className='pt-10 border-t-2 border-(--border-color) w-full'>
+              {/* <div className='border-t-2 border-(--border-color) w-full'> */}
                 <Episode movie={movie} />
-              </div>
+              {/* </div> */}
             </div>
             <div className='w-1/4'>
               <h3 className='text-2xl mb-8 text-center'>Diễn viên</h3>
@@ -246,7 +266,7 @@ function DetailMovie() {
                       <Image 
                         src={`${actor?.profile_path !== '' ? `${actors?.data?.profile_sizes?.original}/${actor?.profile_path}`: '/avatar-placeholder.jpg'}`}
                         fill
-                        sizes='auto'
+                        sizes='100%'
                         alt='avatar-actor'
                         style={{ objectFit: 'cover'}}
                         className='rounded-full'

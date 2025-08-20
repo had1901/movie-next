@@ -1,91 +1,77 @@
-'use client'
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import Image from 'next/image'
 import Link from 'next/link'
-import React, { useEffect, useState } from 'react'
+import React from 'react'
+import SubMenu from './SubMenu'
+import Search from './Search'
+import ClientWrapper from './ClientWrapper'
+import { handleGetMovie } from '@/utils/fetchApi'
+const BASE_URL = process.env.NEXT_PUBLIC_API_URL
 
-const navigations = [
-  { label: 'Trang chủ', href: '/' },
-  { label: 'Thể loại', href: '/' },
-  { label: 'Phim bộ', href: '/' },
-  { label: 'Phim lẻ', href: '/' },
-  { label: 'Quốc gia', href: '/' },
-]
-function Header() {
-    const [scrolled, setScrolled] = useState(0)
-    const [theme, setTheme] = useState(() => {
-        if (typeof window !== "undefined") {
-            return localStorage.getItem("theme") || "light"
-        }
-        return "light"
-    })
-    
-    useEffect(() => {
-        const handleCheckScroll = () => {
-            const y = window.scrollY
-            if (y > 50) {
-                setScrolled(y)
-                window.removeEventListener('scroll', handleCheckScroll) // gỡ luôn tại đây
-            } else {
-                setScrolled(0)
+async function Header() {
+    const [categories, countries] = await Promise.all([
+        handleGetMovie(`${BASE_URL}/v1/api/the-loai`),
+        handleGetMovie(`${BASE_URL}/v1/api/quoc-gia`)
+    ])
+
+    const navigations = [
+        { label: 'Trang chủ', href: '/' },
+        { label: 'Thể loại', href: '#', children: () => {
+            if(categories && categories?.data?.items?.length && categories?.data?.items?.length > 0) {
+                return (
+                    <SubMenu data={categories.data.items} type='the-loai'/>
+                )
             }
-        }
-        
-        window.addEventListener('scroll', handleCheckScroll)
+        }},
+        { label: 'Phim bộ', href: '/danh-sach/phim-bo' },
+        { label: 'Phim lẻ', href: '/danh-sach/phim-le' },
+        { label: 'Phim chiếu rạp', href: '/danh-sach/phim-chieu-rap' },
+        { label: 'Hoạt hình', href: '/danh-sach/hoat-hinh' },
+        { label: 'Quốc gia', href: '#', children: () => {
+            if(countries && countries?.data?.items?.length && countries?.data?.items?.length > 0) {
+                return (
+                    <SubMenu data={countries.data.items} type='quoc-gia' />
+                )
+            }
+        }},
+    ]
 
-        return () => window.removeEventListener('scroll', handleCheckScroll)
-    },[scrolled])
-
-    useEffect(() => {
-        localStorage.setItem("theme", theme)
-
-        // Cập nhật class dark
-        if (theme === "dark") {
-            document.documentElement.classList.add("dark");
-        } else {
-            document.documentElement.classList.remove("dark");
-        }
-    },[theme])
   return (
-    <header className={`${scrolled > 50 ? 'bg-[#0e0e0e]/40 backdrop-blur-xl' : 'bg-transparent'} fixed z-[999] inset-x-0 top-0 transition`}>
-        <div className="container mx-auto px-4">
-            <div className="flex items-center justify-between gap-6 h-16">
-                <Link href={'/'}>
-                    <Image 
-                        src={'/logo.png'} 
-                        alt="logo"
-                        width={100}
-                        height={100}
-                        className="h-full w-auto"
-                        priority 
-                    />
-                </Link>
-                <div className="h-full flex items-center">
-                    {navigations.map((item, i) => (
-                    <Link key={i} href={item.href} className="text-white font-[500] py-4 px-4 inline-block text-[18px]">{item.label}</Link>
-                    ))}
-                </div>
-
-                <div className="flex relative text-white ">
-                    <input 
-                        type="search" 
-                        placeholder="Search..."
-                        className="bg-(--bg-opacity) outline-none border-none rounded-[14px] py-2 pl-7 pr-2 min-w-[300px] text-[15px]"
-                    />
-                    <div className="absolute top-1/2 left-2 -translate-y-1/2">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-4">
-                        <path strokeLinecap="round" strokeLinejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
-                    </svg>
+    <ClientWrapper>
+        <header>
+            <div className="container mx-auto px-4">
+                <div className="flex items-center justify-between gap-6 h-16">
+                    <Link href={'/'}>
+                        <Image 
+                            src={'/logo.png'} 
+                            alt="logo"
+                            width={100}
+                            height={100}
+                            className="h-full w-auto"
+                            priority 
+                        />
+                    </Link>
+                    <div className="h-full flex items-center">
+                        {navigations.map((item, i) => (
+                            <Link key={i} href={item.href} className="text-white relative group font-[500] py-4 px-4 inline-block text-[16px]">
+                                <span>{item.label}</span>
+                                <div className='absolute top-full w-[400px] origin-[10%_0%] scale-75 opacity-0 invisible transition-all duration-200 group-hover:visible group-hover:scale-100 group-hover:opacity-100'>{item.children?.()}</div>
+                            </Link>
+                        ))}
                     </div>
+    
+                    <Search />
+                    {/* <div className="h-full">
+                        <select value={theme} onChange={(e) => setTheme(e.target.value)} className='text-white border-amber-100'>
+                            <option value="light">Sáng</option>
+                            <option value="dark">Tối</option>
+                        </select>
+                    </div> */}
                 </div>
-                {/* <div className="h-full">
-                    <select value={theme} onChange={(e) => setTheme(e.target.value)} className='text-white border-amber-100'>
-                        <option value="light">Sáng</option>
-                        <option value="dark">Tối</option>
-                    </select>
-                </div> */}
             </div>
-        </div>
-    </header>
+        </header>
+    </ClientWrapper>
   )
 }
 

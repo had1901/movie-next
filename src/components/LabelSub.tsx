@@ -1,7 +1,5 @@
 import React, { ReactNode } from 'react'
 
-
-
 function LabelSub({ icon, label }:{ icon: ReactNode, label: string}) {
 
   return (

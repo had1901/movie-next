@@ -1,8 +1,9 @@
-'use client'
+
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 import Image from 'next/image'
 import React, { useEffect } from 'react'
+
 import LabelSub from './LabelSub'
 import ButtonViewDetail from './ButtonViewDetail'
 import { useMovieLink } from '@/store/store'
@@ -11,9 +12,6 @@ import Content from './Content'
 import Information from './Information'
 
 function Poster({ data, hasMark = true, textSize }:{ data: any, hasMark: boolean, textSize: string }) {
-    // const movieLink = useMovieLink(state => state.link)
-    const reset = useMovieLink(state => state.reset)
-    // console.log('Poster', data)
     
     const icons = [
       {
@@ -117,9 +115,7 @@ function Poster({ data, hasMark = true, textSize }:{ data: any, hasMark: boolean
             maskSize: '100% 100%',
             
           }
-    useEffect(() => {
-        return () => reset()
-    },[reset])
+  
 
   return (
     <section className='relative h-full overflow-hidden rounded-2xl'>
@@ -143,7 +139,7 @@ function Poster({ data, hasMark = true, textSize }:{ data: any, hasMark: boolean
         <div data-swiper-parallax-x="30" className={`absolute inset-[10%] text-white flex flex-col justify-center gap-2 z-50`}>
            
           <div className='flex items-center gap-2'>
-            <h1 className='inline font-bold text-2xl sm:text-2xl md:text-2xl lg:text-3xl xl:text-3xl 2xl:text-4xl bg-gradient-to-r from-(--text-main-yellow) to-[#9457ff] bg-clip-text text-transparent' style={{ fontSize: hasMark ? '' : textSize}}>
+            <h1 className='font-nosifer inline-block leading-14 px-1 font-bold text-2xl sm:text-2xl md:text-2xl lg:text-3xl xl:text-3xl 2xl:text-4xl bg-(--text-main-yellow) bg-clip-text text-transparent' style={{ fontSize: hasMark ? '' : textSize}}>
                 {data.name}
             </h1 >
             {data.chieurap && <span className='bg-gradient-to-r from-[#3f57ca] to-[#c650c0] py-[2px] px-1 rounded text-xs mt-1 inline-block'>Phim chiếu rạp</span>}
