@@ -5,20 +5,7 @@ import React, { useEffect, useState } from 'react'
 import { isArray } from 'util'
 
 
-
-
-
-function Episode({ movie }:{ movie: any }) {
-    const [labelIndex, setLabelIndex] = useState<number>(1)
-    const [epsIndex, setEpsIndex] = useState<number | string>(0)
-    const [listEpi, setListEpi] = useState<number>(1)
-    const [data, setData] = useState<any[]>(movie?.data?.item?.episodes[0].server_data)
-    const [episode, setEpisode] = useState<number | string | null>(null)
-
-    const setLink = useMovieLink(state => state.setLink)
-    const reset = useMovieLink(state => state.reset)
-
-    const handleSliceArray = (arr: any[], slice: number) => {
+const handleSliceArray = (arr: any[], slice: number) => {
         if (!arr?.length) return []
         const result = []
         for(let i = 0; i < arr?.length; i += slice) {
@@ -26,6 +13,19 @@ function Episode({ movie }:{ movie: any }) {
         }
         return result
     }
+
+
+function Episode({ movie }:{ movie: any }) {
+    const [labelIndex, setLabelIndex] = useState<number>(1)
+    const [epsIndex, setEpsIndex] = useState<number | string>(0)
+    const [listEpi, setListEpi] = useState<number>(1)
+    const [data, setData] = useState<any[]>(handleSliceArray(movie && movie?.data?.item?.episodes[0]?.server_data, 100))
+    const [episode, setEpisode] = useState<number | string | null>(null)
+    console.log('data', data)
+    const setLink = useMovieLink(state => state.setLink)
+    const reset = useMovieLink(state => state.reset)
+
+    
     const chunks = handleSliceArray(movie && movie?.data?.item?.episodes[0]?.server_data, 100)
     const handleChangeServer = (index:number) => {
         setLabelIndex(index + 1)

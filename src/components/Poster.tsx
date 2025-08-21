@@ -1,15 +1,8 @@
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
-
-import Image from 'next/image'
-import React, { useEffect } from 'react'
-
+import React, {  } from 'react'
 import LabelSub from './LabelSub'
 import ButtonViewDetail from './ButtonViewDetail'
-import { useMovieLink } from '@/store/store'
-import StreamingPlayer from './StreamingPlayer'
-import Content from './Content'
-import Information from './Information'
 
 function Poster({ data, hasMark = true, textSize }:{ data: any, hasMark: boolean, textSize: string }) {
     

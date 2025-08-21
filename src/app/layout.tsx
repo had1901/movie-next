@@ -5,6 +5,7 @@ import { unstable_ViewTransition as ViewTransition } from 'react';
 import Link from "next/link";
 import Image from "next/image";
 import Header from "@/components/Header";
+import Script from 'next/script'
 
 // const geistSans = Geist({
 //   variable: "--font-geist-sans",
@@ -95,6 +96,14 @@ export const metadata: Metadata = {
 export default function RootLayout({ children, params }: Readonly<{ children: React.ReactNode, params: { slug?: string }}>) {
   return (
     <html lang="en" data-theme="dark">
+      <head>
+        <Script
+          id="ad-script"
+          type='text/javascript' 
+          src='https://pl27471772.profitableratecpm.com/3f/90/95/3f90956328c9d854501640734391bb15.js'
+          strategy="afterInteractive" 
+        />
+      </head>
       <body className={`${robotoFont.variable} ${nosiferFont.variable} antialiased dark:bg-[#292929]`}>
         <Header />
         <ViewTransition key={params?.slug || 'root'}>
