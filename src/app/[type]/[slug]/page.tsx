@@ -48,12 +48,7 @@ export async function generateMetadata({ params, searchParams }: Props): Promise
 }
 
 
-async function Category({ 
-  params, searchParams 
-} : { 
-  params: Promise<{ type: string, slug: string}>, 
-  searchParams: { page: string}
-}) {
+async function Category({ params, searchParams }: Props) {
   const { type, slug } = await params
   const { page } = await searchParams
   const { data } = await handleGetMovie(`${BASE_URL}/v1/api/${type}/${slug}?page=${page}&limit=48`)
