@@ -19,7 +19,7 @@ function Episode({ movie }:{ movie: any }) {
     const [labelIndex, setLabelIndex] = useState<number>(1)
     const [epsIndex, setEpsIndex] = useState<number | string>(0)
     const [listEpi, setListEpi] = useState<number>(1)
-    const [data, setData] = useState<any[]>(handleSliceArray(movie && movie?.data?.item?.episodes[0]?.server_data, 100))
+    const [data, setData] = useState<any[]>(handleSliceArray(movie && movie?.data?.item?.episodes[listEpi]?.server_data, 100))
     const [episode, setEpisode] = useState<number | string | null>(null)
     console.log('data', data)
     const setLink = useMovieLink(state => state.setLink)

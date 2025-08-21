@@ -97,12 +97,26 @@ export default function RootLayout({ children, params }: Readonly<{ children: Re
   return (
     <html lang="en" data-theme="dark">
       <head>
+        {/* Social */}
         <Script
-          id="ad-script"
+          id="ad-script-1"
           type='text/javascript' 
-          src='https://pl27471772.profitableratecpm.com/3f/90/95/3f90956328c9d854501640734391bb15.js'
+          src='https://contributionabdicatemoral.com/95/a6/a6/95a6a6812d9b715ec0884cf458a2ed30.js'
           strategy="afterInteractive" 
         />
+
+        {/* Banner */}
+        <Script id="ad-options" strategy="beforeInteractive">
+          {`
+            var atOptions = {
+              'key' : '3908418f6f62c51ffde39bc6cdc6b9d5',
+              'format' : 'iframe',
+              'height' : 90,
+              'width' : 728,
+              'params' : {}
+            };
+          `}
+        </Script>
       </head>
       <body className={`${robotoFont.variable} ${nosiferFont.variable} antialiased dark:bg-[#292929]`}>
         <Header />
