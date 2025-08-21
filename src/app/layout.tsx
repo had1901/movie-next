@@ -117,6 +117,14 @@ export default function RootLayout({ children, params }: Readonly<{ children: Re
             };
           `}
         </Script>
+        
+        {/* Anti adblock */}
+        <Script
+          id="ad-script-2"
+          type='text/javascript' 
+          src='https://contributionabdicatemoral.com/3f/90/95/3f90956328c9d854501640734391bb15.jss'
+          strategy="afterInteractive" 
+        />
       </head>
       <body className={`${robotoFont.variable} ${nosiferFont.variable} antialiased dark:bg-[#292929]`}>
         <Header />
