@@ -31,7 +31,7 @@ function SwiperCarousel({ movies, clippath, slidesPerView = 8, ratio='aspect-[2/
     }, [])
 
   return (
-    <div className={`h-full w-full min-w-0`}>
+    <div className={`h-full w-full min-w-0 `}>
             <div className='relative'>
                 <Swiper 
                     modules={[Pagination, Navigation]}
@@ -57,8 +57,6 @@ function SwiperCarousel({ movies, clippath, slidesPerView = 8, ratio='aspect-[2/
                                 clippath={clippath} 
                                 ratio={ratio} 
                                 isBackdrop={isBackdrop} 
-                                btnPrev='swiper-button-prev-slider' 
-                                btnNext='swiper-button-next-slider'
                             />
                         </SwiperSlide>
                     ))}

@@ -12,7 +12,6 @@ function Pagination({ total }:{ total: number }) {
   const [limit, setLimit] = useState(currentLimit)
 
   const totalPage = Math.ceil(total / 48)
-  console.log(totalPage)
 
   const handlePrevPage = () => {
     if(page > 0) {
@@ -20,7 +19,6 @@ function Pagination({ total }:{ total: number }) {
     }
   }
   const handleNextPage = () => {
-    console.log('next')
     if(page <= total) {
       setPage(prev => prev + 1)
     }
@@ -48,7 +46,6 @@ const handleBlur = (e: React.ChangeEvent<HTMLInputElement>) => {
     if(page) {
       timeOutId.current = window.setTimeout(() => {
         const params = new URLSearchParams(searchParams.toString())
-        console.log('param', params.get('page'))
         params.set('page', page.toString())
         router.push(`?${params.toString()}`)
       },500)

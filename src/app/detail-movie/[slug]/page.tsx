@@ -12,6 +12,10 @@ import { useParams } from 'next/navigation'
 import { useLight, useMovieLink } from '@/store/store'
 import Link from 'next/link'
 import { handleGetMovie } from '@/utils/fetchApi'
+import Slider from '@/components/Slider'
+import ListMovie from '@/components/ListMovie'
+import SwiperCarousel from '@/components/SwiperCarousel'
+import MovieCard from '@/components/MovieCard'
 const BASE_URL = process.env.NEXT_PUBLIC_API_URL
 
 
@@ -21,11 +25,13 @@ function DetailMovie() {
     const [movie, setMovie] = useState<any>({})
     const [actors, setActors] = useState<any>({})
     const [poster, setPoster] = useState<any>({})
+    const [home, setHome] = useState<any>({})
     const [loading, setLoading] = useState(true)
     const movieLink = useMovieLink(state => state.link)
     const reset = useMovieLink(state => state.reset)
     
-    console.log('Phim', movie)
+    // console.log('Phim', movie)
+    // console.log('Home', home)
     // console.log('Poster', poster)
 
     // Fix: Thêm optional chaining và kiểm tra data tồn tại
@@ -58,35 +64,28 @@ function DetailMovie() {
       (async () => {
         try{
           setLoading(true)
-          const [movieData, actorsData, posterData] = await Promise.all([
+          const [movieData, actorsData, posterData, homeData] = await Promise.all([
             handleGetMovie(`${BASE_URL}/v1/api/phim/${slug}`),
             handleGetMovie(`${BASE_URL}/v1/api/phim/${slug}/peoples`),
-            handleGetMovie(`${BASE_URL}/v1/api/phim/${slug}/images`)
+            handleGetMovie(`${BASE_URL}/v1/api/phim/${slug}/images`),
+            handleGetMovie(`${BASE_URL}/v1/api/home`)
           ])
           setMovie(movieData || {})
           setActors(actorsData || {})
           setPoster(posterData || {})
+          setHome(homeData || {})
         } catch(e) {
           console.log(e)
           // Set empty objects để tránh undefined
           setMovie({})
           setActors({})
           setPoster({})
+          setHome({})
         } finally {
           setLoading(false)
         }
       })()
     }, [slug])
-
-    useEffect(() => {
-        return () => reset()
-    },[reset])
-
-    useEffect(() => {
-        if(movie && movie.data && movie.data?.seoOnPage?.titleHead){
-          document.title = movie.data?.seoOnPage?.titleHead
-        }
-    },[movie])
     
     if (loading) {
       return (
@@ -123,9 +122,14 @@ function DetailMovie() {
               onError={(e) => {
                 console.log('Image load error:', e)
               }}
+              priority
             />)
           : (<Image 
-              src={`${movie?.data?.APP_DOMAIN_CDN_IMAGE}/uploads/movies/${movie?.data?.item?.poster_url}`} 
+              src={
+                  movie?.data?.APP_DOMAIN_CDN_IMAGE && movie?.data?.item?.poster_url
+                  ? `${movie.data.APP_DOMAIN_CDN_IMAGE}/uploads/movies/${movie.data.item.poster_url}`
+                  : "/fallback.png"
+              }
               fill 
               sizes='100%' 
               alt={`Poster ${movie?.data?.item?.poster_url || 'movie'}`} 
@@ -141,6 +145,7 @@ function DetailMovie() {
               onError={(e) => {
                 console.log('Image load error:', e)
               }}
+              priority
             />)
           }
           <div style={{backgroundImage: `url(/dot.png)`, backgroundRepeat: 'repeat', backgroundSize: '3px'}} className='absolute inset-0 opacity-50 w-full h-full'></div>
@@ -148,23 +153,32 @@ function DetailMovie() {
         
         <div className={`${movieLink ? 'mt-10' : 'absolute top-[75%]'} transition-all duration-500`}>
           <div className='flex flex-wrap px-4 py-8'>
-            <div className='w-3/4 flex flex-wrap h-fit border-r-2 border-(--border-color) px-4'>
+            <div className='w-3/4 max-w-full flex flex-wrap min-w-0 overflow-hidden h-fit border-r-2 border-(--border-color) px-4'>
               <div className='w-full flex gap-1 pb-10'>
                 <div className='flex 1 w-[150px] h-[250px] relative mr-6 py-4'>
                   {/* Thumbnail image code here */}
                   <Image 
-                    src={`${movie?.data?.APP_DOMAIN_CDN_IMAGE}/uploads/movies/${movie?.data?.item?.thumb_url}`} 
+                    src={
+                        movie?.data?.APP_DOMAIN_CDN_IMAGE && movie?.data?.item?.thumb_url
+                        ? `${movie.data.APP_DOMAIN_CDN_IMAGE}/uploads/movies/${movie.data.item.thumb_url}`
+                        : "/fallback.png"
+                    }
                     fill
                     sizes='100%'
                     placeholder="blur"
-                    blurDataURL={`${movie?.data?.APP_DOMAIN_CDN_IMAGE}/uploads/movies/${movie?.data?.item?.thumb_url}`}
+                    blurDataURL={
+                      movie?.data?.APP_DOMAIN_CDN_IMAGE && movie?.data?.item?.thumb_url
+                        ? `${movie.data.APP_DOMAIN_CDN_IMAGE}/uploads/movies/${movie.data.item.thumb_url}`
+                        : "/fallback.png"
+                    }
                     alt='Thumbnail Movie'
                     style={{objectFit: "cover"}}
-                    className='rounded-2xl '
+                    className='rounded-2xl'
+                    priority
                   />
                 </div>
-                <div className={`${movieLink ? '' : 'bg-gradient-to-b from-(--bg-sub) to-transparent backdrop-blur-xl'} flex-2 shrink-0 px-3 py-4 rounded-2xl`}>
-                  <h2 className='text-[22px] font-semibold bg-gradient-to-r from-(--bg-main-color) to-fuchsia-700 bg-clip-text text-transparent'>
+                <div className={`${movieLink ? '' : 'bg-gradient-to-b from-(--bg-sub) to-transparent backdrop-blur-sm'} flex-2 shrink-0 px-3 py-4 rounded-2xl`}>
+                  <h2 className='text-[22px] font-semibold bg-gradient-to-r from-(--bg-main-color) to-white bg-clip-text text-transparent'>
                     {movie?.data?.item?.name || movie?.item?.name || 'Đang tải...'}
                   </h2>
                   <h3>{movie?.data?.item?.origin_name || movie?.item?.origin_name}</h3>
@@ -229,34 +243,67 @@ function DetailMovie() {
                   </div>
                 </div>
               <div className='flex-2 shrink-0'>
-                  <div className={`${movieLink ? 'hidden' : ''} flex items-center gap-6 px-3 mb-1 h-20 bg-(--bg-sub) backdrop-blur-xl py-4 rounded-2xl`}>
-                    <button className='flex items-center justify-center gap-2 cursor-pointer'>
+                  <div className={`${movieLink ? 'hidden' : ''} flex items-center px-3 mb-1 h-20 bg-(--bg-sub) backdrop-blur-sm py-4 rounded-2xl`}>
+                    <button className='flex flex-1 items-center justify-center gap-2 min-w-[120px] text-(--text-main-yellow) w-fit p-3 rounded-full cursor-pointer'>
                       <i>
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="size-5">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="size-4">
                           <path d="M6.3 2.84A1.5 1.5 0 0 0 4 4.11v11.78a1.5 1.5 0 0 0 2.3 1.27l9.344-5.891a1.5 1.5 0 0 0 0-2.538L6.3 2.841Z" />
                         </svg>
                       </i>
-                      <Link href={'#episodes'} style={{ scrollBehavior: 'smooth' }}>Xem ngay</Link>
+                      <Link href={'#episodes'} style={{ scrollBehavior: 'smooth' }} className='font-semibold'>Xem ngay</Link>
                     </button >
-                    <button className='flex items-center justify-center gap-2 min-w-[120px] w-fit p-3 rounded-full cursor-pointer'>
+                    <button className='flex flex-1 items-center justify-center gap-2 min-w-[120px] w-fit p-3 rounded-full cursor-pointer'>
                       <i>
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="size-5">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="size-4">
                           <path d="M3.25 4A2.25 2.25 0 0 0 1 6.25v7.5A2.25 2.25 0 0 0 3.25 16h7.5A2.25 2.25 0 0 0 13 13.75v-7.5A2.25 2.25 0 0 0 10.75 4h-7.5ZM19 4.75a.75.75 0 0 0-1.28-.53l-3 3a.75.75 0 0 0-.22.53v4.5c0 .199.079.39.22.53l3 3a.75.75 0 0 0 1.28-.53V4.75Z" />
                         </svg>
                       </i>
-                      <label htmlFor=''>Trailer</label>
+                      <Link href={'#'}>Trailer</Link>
+                    </button>
+                    <button className='flex flex-1 items-center justify-center gap-2 min-w-[120px] w-fit p-3 rounded-full cursor-pointer'>
+                      <i>
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-4">
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z" />
+                        </svg>
+
+                      </i>
+                      <Link href={'#'}>Yêu thích</Link>
+                    </button>
+                    <button className='flex flex-1 items-center justify-center gap-2 min-w-[120px] w-fit p-3 rounded-full cursor-pointer'>
+                      <i>
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-4">
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M7.217 10.907a2.25 2.25 0 1 0 0 2.186m0-2.186c.18.324.283.696.283 1.093s-.103.77-.283 1.093m0-2.186 9.566-5.314m-9.566 7.5 9.566 5.314m0 0a2.25 2.25 0 1 0 3.935 2.186 2.25 2.25 0 0 0-3.935-2.186Zm0-12.814a2.25 2.25 0 1 0 3.933-2.185 2.25 2.25 0 0 0-3.933 2.185Z" />
+                        </svg>
+                      </i>
+                     <Link href={'#'}>Chia sẻ</Link>
                     </button>
                   </div>
-                  <div className={`${movieLink ? '' : 'bg-gradient-to-b from-(--bg-sub) to-transparent backdrop-blur-xl'} px-3 py-4 rounded-2xl`}>
+                  <div className={`${movieLink ? '' : 'bg-gradient-to-b from-(--bg-sub) to-transparent backdrop-blur-sm'} px-3 py-4 rounded-2xl`}>
                       <h3 className='text-lg mb-1'>Giới thiệu</h3>
                       <Content content={movie?.data?.item?.content} />
                   </div>
               </div>
               </div>
-              {/* <div className='border-t-2 border-(--border-color) w-full'> */}
-                <Episode movie={movie} />
-              {/* </div> */}
+              <Episode movie={movie} />
+
+              {/* <ListMovie title='Có thể bạn sẽ thích'>
+                <div className='w-full grid grid-cols-6 gap-3 flex-wrap'>
+                    {home?.data?.items?.map((item: any, index: number) => (
+                          <MovieCard 
+                            key={index}
+                            item={item} 
+                            imgDomain={home?.data?.APP_DOMAIN_CDN_IMAGE} 
+                            index={index} 
+                            clippath={true} 
+                          />
+                    ))}
+                </div>
+              </ListMovie> */}
             </div>
+
+            
+
+            {/* Diễn viên */}
             <div className='w-1/4'>
               <h3 className='text-2xl mb-8 text-center'>Diễn viên</h3>
               <ul className='flex items-center flex-wrap gap-4 px-4'>

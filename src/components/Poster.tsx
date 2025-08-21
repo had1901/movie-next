@@ -85,9 +85,10 @@ function Poster({ data, hasMark = true, textSize }:{ data: any, hasMark: boolean
         type: 'view-now',
         icon: () => {
           return (
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="size-8">
-              <path d="M3.105 2.288a.75.75 0 0 0-.826.95l1.414 4.926A1.5 1.5 0 0 0 5.135 9.25h6.115a.75.75 0 0 1 0 1.5H5.135a1.5 1.5 0 0 0-1.442 1.086l-1.414 4.926a.75.75 0 0 0 .826.95 28.897 28.897 0 0 0 15.293-7.155.75.75 0 0 0 0-1.114A28.897 28.897 0 0 0 3.105 2.288Z" />
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="size-8">
+              <path fillRule="evenodd" d="M4.5 5.653c0-1.427 1.529-2.33 2.779-1.643l11.54 6.347c1.295.712 1.295 2.573 0 3.286L7.28 19.99c-1.25.687-2.779-.217-2.779-1.643V5.653Z" clipRule="evenodd" />
             </svg>
+
           )
         }
       },
@@ -105,16 +106,16 @@ function Poster({ data, hasMark = true, textSize }:{ data: any, hasMark: boolean
     ]
 
     const styleCustomY = {
-          maskImage: 'linear-gradient(90deg, transparent 0, rgba(0, 0, 0, 0.2) 15%, #292929 40%, #292929 80%, transparent 100%)',
-          WebkitMaskImage: 'linear-gradient(90deg, transparent 0, rgba(0, 0, 0, 0.2) 15%, #292929 40%, #292929 80%, transparent 100%)',
-        }
+      maskImage: 'linear-gradient(90deg, transparent 0, rgba(0, 0, 0, 0.2) 15%, #292929 40%, #292929 80%, transparent 100%)',
+      WebkitMaskImage: 'linear-gradient(90deg, transparent 0, rgba(0, 0, 0, 0.2) 15%, #292929 40%, #292929 80%, transparent 100%)',
+    }
     const styleCustomX = {
-            WebkitMaskImage: 'linear-gradient(0deg, transparent 0%, #292929 20%, #292929 80%, transparent)',
-            maskImage: 'linear-gradient(0deg, transparent 0%, #292929 20%, #292929 80%, transparent)',
-            WebkitMaskSize: '100% 100%',
-            maskSize: '100% 100%',
-            
-          }
+      WebkitMaskImage: 'linear-gradient(0deg, transparent 0%, #292929 20%, #292929 80%, transparent)',
+      maskImage: 'linear-gradient(0deg, transparent 0%, #292929 20%, #292929 80%, transparent)',
+      WebkitMaskSize: '100% 100%',
+      maskSize: '100% 100%',
+      
+    }
   
 
   return (
@@ -168,9 +169,9 @@ function Poster({ data, hasMark = true, textSize }:{ data: any, hasMark: boolean
           </p>
   
           <div className='flex items-center gap-10'>
-          {buttonsView.map((btn, i) => (
-              <ButtonViewDetail key={i} icon={btn.icon()} label={btn.label} type={btn.type} originalURL={data.trailer_url} slug={data.slug} />
-          ))}
+            {buttonsView.map((btn, i) => (
+                <ButtonViewDetail key={i} icon={btn.icon()} label={btn.label} type={btn.type} originalURL={data.trailer_url} slug={data.slug} />
+            ))}
           </div>
           
         </div>

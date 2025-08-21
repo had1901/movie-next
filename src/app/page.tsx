@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import HeroMovie from "@/components/HeroMovie";
+import HistoryViewed from "@/components/HistoryViewed";
 import ListMovie from "@/components/ListMovie";
 import Slider from "@/components/Slider";
 import SwiperCarousel from "@/components/SwiperCarousel";
@@ -7,7 +8,7 @@ import { handleGetMovie } from "@/utils/fetchApi";
 const BASE_URL = process.env.NEXT_PUBLIC_API_URL
 
 
-  const unwrap = (res: PromiseSettledResult<any>) => res.status === 'fulfilled' ? res.value : null
+const unwrap = (res: PromiseSettledResult<any>) => res.status === 'fulfilled' ? res.value : null
 
 export default async function Home() {
 
@@ -52,7 +53,7 @@ export default async function Home() {
       <ListMovie title="Phim hành động chiếu rạp">
         <SwiperCarousel movies={collectionMovies} clippath/>
       </ListMovie>
-
+      <HistoryViewed />
       <ListMovie title="Phim mới">
         <SwiperCarousel movies={newMovies} />
       </ListMovie>
