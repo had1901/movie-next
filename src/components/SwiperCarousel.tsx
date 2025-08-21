@@ -1,10 +1,8 @@
 'use client'
 /* eslint-disable @typescript-eslint/no-explicit-any */
-
 import React, { useEffect, useRef } from 'react'
-import Image from 'next/image'
 import { Swiper, SwiperSlide } from 'swiper/react'
-import { Pagination, Navigation, Autoplay, Parallax, EffectFade  } from "swiper/modules"
+import { Pagination, Navigation } from "swiper/modules"
 import 'swiper/css/bundle'
 import 'swiper/css/navigation'
 import MovieCard from './MovieCard'

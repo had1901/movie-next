@@ -2,8 +2,6 @@
 'use client'
 import React, { useEffect, useState } from 'react'
 import MovieCard from './MovieCard'
-import ListMovie from './ListMovie'
-import SwiperCarousel from './SwiperCarousel'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import { Navigation, Pagination } from 'swiper/modules'
 const BASE_URL = process.env.NEXT_PUBLIC_API_URL

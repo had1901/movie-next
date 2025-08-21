@@ -1,20 +1,17 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable @next/next/no-img-element */
 'use client'
-import React, { useMemo, useRef, useState } from 'react'
+import React, { useRef, useState } from 'react'
 import Image from 'next/image';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { MovieHomeResponse } from '@/interface/interface';
-import { Pagination, Navigation, Autoplay, Parallax, EffectFade, Thumbs, FreeMode  } from "swiper/modules";
+import { Pagination, Navigation, Autoplay, Parallax, EffectFade, Thumbs  } from "swiper/modules";
 import 'swiper/css/bundle';
 import 'swiper/css/navigation';
 import 'swiper/css/thumbs';
 import Poster from './Poster';
 
-const bg = 'https://www.themoviedb.org/assets/2/v4/misc/trending-bg-39afc2a5f77e31d469b25c187814c0a2efef225494c038098d62317d923f8415.svg'
 
 
-function Slider({ result, ratio = 'aspect-[2/3]', hasMark }:{ result: any, ratio?: string, hasMark?: boolean }) {
+function Slider({ result, ratio = 'aspect-[2/3]', hasMark=false }:{ result: any, ratio?: string, hasMark?: boolean }) {
     const swiperRef = useRef<any>(null)
     const [currentSlide, setCurrentSlide] = useState(0)
     const [thumbsSwiper, setThumbsSwiper] = useState<any>(null)

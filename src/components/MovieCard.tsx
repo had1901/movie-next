@@ -1,6 +1,6 @@
 'use client'
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { ReactNode, useEffect, useRef } from 'react'
+import React, { useEffect, useRef } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import gsap from 'gsap'

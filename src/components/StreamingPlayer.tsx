@@ -1,10 +1,7 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
+
 'use client'
 import { useLight, useMovieLink } from '@/store/store';
-import React, { useEffect, useRef, useState } from 'react'
-import videojs from 'video.js';
-import Player from 'video.js/dist/types/player';
-import 'video.js/dist/video-js.css';
+import React, { useEffect, useRef } from 'react'
 import ButtonVideoControl from './ButtonVideoControl';
 
 
@@ -13,7 +10,7 @@ function StreamingPlayer() {
   const reset = useMovieLink(state => state.reset)
   const light = useLight(state => state.light)
   const videoRef = useRef<HTMLIFrameElement>(null)
-  const [time, setTime] = useState(0)
+  // const [time, setTime] = useState(0)
 
   
   const icon1 = (<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-5">
@@ -27,7 +24,7 @@ function StreamingPlayer() {
     return () => reset()
   },[reset])
 
-  
+
   if(movieLink) {
     return ( 
       <div className={`${light ? 'fixed inset-0 bg-black z-30' : 'bg-black'} rounded-t-2xl mt-3 transition-all duration-200`}>

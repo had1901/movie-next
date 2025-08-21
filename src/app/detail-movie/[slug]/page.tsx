@@ -28,11 +28,8 @@ function DetailMovie() {
     const [home, setHome] = useState<any>({})
     const [loading, setLoading] = useState(true)
     const movieLink = useMovieLink(state => state.link)
-    const reset = useMovieLink(state => state.reset)
     
     // console.log('Phim', movie)
-    // console.log('Home', home)
-    // console.log('Poster', poster)
 
     // Fix: Thêm optional chaining và kiểm tra data tồn tại
     const domainImages = () => {

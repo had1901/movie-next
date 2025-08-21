@@ -6,10 +6,10 @@ function Pagination({ total }:{ total: number }) {
   const searchParams = useSearchParams()
   const router = useRouter()
   const currentPage = Number(searchParams.get('page')) || 1
-  const currentLimit = Number(searchParams.get('limit')) || 24
+  // const currentLimit = Number(searchParams.get('limit')) || 24
   const timeOutId = useRef<number | null>(null)
   const [page, setPage] = useState(currentPage)
-  const [limit, setLimit] = useState(currentLimit)
+  // const [limit, setLimit] = useState(currentLimit)
 
   const totalPage = Math.ceil(total / 48)
 
