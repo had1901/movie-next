@@ -40,7 +40,7 @@ function Episode({ movie }:{ movie: any }) {
 
     console.log('visibleEpisodes', visibleEpisodes)
     const handleChangeServer = (index:number) => {
-        setServerIndex(index + 1)
+        setServerIndex(index)
         setChunkIndex(0)
         setActiveEpName(null)
         reset()
@@ -95,7 +95,7 @@ function Episode({ movie }:{ movie: any }) {
                         <li 
                             key={index} 
                             className={`${activeEpName === film.name ? 'text-(--text-main-color) bg-(--bg-main-color)' : 'text-white' } ${film.name === '' ? 'hidden' : ''} flex items-center gap-1 justify-center px-2 font-medium bg-(--bg-label) min-h-14 text-center rounded-sm cursor-pointer hover:opacity-80`}
-                            onClick={() => handlePickEpisode (index + 1, film.link_embed, film.name)}
+                            onClick={() => handlePickEpisode (index, film.link_embed, film.name)}
                         >
                             <i>
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" className="size-4">

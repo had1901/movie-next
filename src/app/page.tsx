@@ -27,7 +27,7 @@ export default async function Home() {
   handleGetMovie(`${BASE_URL}/v1/api/danh-sach/hoat-hinh?page=1&limit=24&country=nhat-ban`),
   handleGetMovie(`${BASE_URL}/v1/api/danh-sach/phim-moi?page=1&limit=24&year=2025`),
   handleGetMovie(`${BASE_URL}/v1/api/danh-sach/phim-le?page=1&limit=24&year=2025`),
-  handleGetMovie(`${BASE_URL}/v1/api/danh-sach/phim-chieu-rap?page=1&limit=24&year=2025&category=hanh-dong`),
+  handleGetMovie(`${BASE_URL}/v1/api/danh-sach/phim-chieu-rap?page=1&limit=24&year=2025`),
   handleGetMovie(`${BASE_URL}/v1/api/danh-sach/tv-shows?page=1&limit=24`),
   handleGetMovie(`${BASE_URL}/v1/api/quoc-gia/han-quoc?page=1&limit=24&year=2025`),
   handleGetMovie(`${BASE_URL}/v1/api/quoc-gia/trung-quoc?page=1&limit=24&year=2025`),
@@ -53,7 +53,9 @@ export default async function Home() {
       <ListMovie title="Phim hành động chiếu rạp">
         <SwiperCarousel movies={collectionMovies} clippath/>
       </ListMovie>
+      
       <HistoryViewed />
+
       <ListMovie title="Phim mới">
         <SwiperCarousel movies={newMovies} />
       </ListMovie>

@@ -8,14 +8,10 @@ const BASE_URL = process.env.NEXT_PUBLIC_API_URL
 
 function HistoryViewed() {
     const [movies, setMovies] = useState<any>([])
-    console.log(movies)
-        console.log(movies?.data?.APP_DOMAIN_CDN_IMAGE)
     
     useEffect(() => {
         const itemSlug = localStorage.getItem('_films')
         const arrParse: string[] = itemSlug ? JSON.parse(itemSlug) : []
-
-        console.log(arrParse)
 
         const handleFetch = async () => {
             const results = await Promise.all(
@@ -28,6 +24,7 @@ function HistoryViewed() {
         handleFetch()
     },[])
 
+    if(!movies.length) return null
   return (
     <div className='relative bg-gradient-to-t from-black to-transparent rounded-2xl overflow-hidden mt-10'>
         <div className=' px-6 py-8'>

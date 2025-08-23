@@ -90,8 +90,8 @@ function Slider({ result, ratio = 'aspect-[2/3]', hasMark=false }:{ result: any,
                     </SwiperSlide>
                 ))}
             </Swiper>
-            <button className='swiper-button-prev'></button>
-            <button className='swiper-button-next'></button>
+            <button className='swiper-button-prev' name='button'></button>
+            <button className='swiper-button-next' name='button'></button>
         </div>
     </div>
   )

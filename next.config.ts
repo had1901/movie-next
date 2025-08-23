@@ -15,6 +15,14 @@ const nextConfig: NextConfig = {
         hostname: 'image.tmdb.org',
         pathname: '/**',
       },
+      {
+        protocol: 'https',
+        hostname: '**', // cho phép tất cả domain HTTPS
+      },
+      {
+        protocol: 'http',
+        hostname: '**', // nếu muốn cả http
+      },
     ],
   },
 }

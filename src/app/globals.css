@@ -47,6 +47,17 @@ body {
   --text-sub-color: rgb(179, 179, 179);
 }
 
+/* Global */
+
+button, input, select, a {
+  /* cursor: pointer; */
+  /* outline: none; */
+}
+/* input:focus {
+  outline: #ffd694;
+  border: 1px solid var(--bg-sub);
+} */
+
 input[type="number"]::-webkit-outer-spin-button,
 input[type="number"]::-webkit-inner-spin-button {
   -webkit-appearance: none;

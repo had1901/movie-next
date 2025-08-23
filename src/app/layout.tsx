@@ -6,6 +6,7 @@ import Link from "next/link";
 import Image from "next/image";
 import Header from "@/components/Header";
 import Script from 'next/script'
+import Alert from "@/components/Alert";
 
 // const geistSans = Geist({
 //   variable: "--font-geist-sans",
@@ -106,17 +107,23 @@ export default function RootLayout({ children, params }: Readonly<{ children: Re
         />
 
         {/* Banner */}
-        <Script id="ad-options" strategy="beforeInteractive">
+         <Script id='ad-atoptions' strategy='beforeInteractive'>
           {`
-            var atOptions = {
-              'key' : '3908418f6f62c51ffde39bc6cdc6b9d5',
-              'format' : 'iframe',
-              'height' : 90,
-              'width' : 728,
-              'params' : {}
-            };
+            window.atOptions = {
+              key: '3908418f6f62c51ffde39bc6cdc6b9d5',
+              format: 'iframe',
+              height: 90,
+              width: 728,
+              params: {}
+            }
           `}
         </Script>
+
+        <Script
+          id='ad-invoke'
+          src='https://contributionabdicatemoral.com/3908418f6f62c51ffde39bc6cdc6b9d5/invoke.js'
+          strategy='beforeInteractive'
+        />
         
         {/* Anti adblock */}
         <Script
@@ -127,7 +134,9 @@ export default function RootLayout({ children, params }: Readonly<{ children: Re
         />
       </head>
       <body className={`${robotoFont.variable} ${nosiferFont.variable} antialiased dark:bg-[#292929]`}>
-        <Header />
+        <Alert>
+          <Header />
+        </Alert>
         <ViewTransition key={params?.slug || 'root'}>
           {children}
         </ViewTransition>

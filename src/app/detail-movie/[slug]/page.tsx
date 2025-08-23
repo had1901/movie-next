@@ -27,10 +27,17 @@ function DetailMovie() {
     const [poster, setPoster] = useState<any>({})
     const [home, setHome] = useState<any>({})
     const [loading, setLoading] = useState(true)
+    const [show, setShow] = useState(false)
     const movieLink = useMovieLink(state => state.link)
     
-    // console.log('Phim', movie)
+    console.log('Phim', movie)
 
+    const getYoutubeEmbedUrl = (url?: string) => {
+      if (!url) return ''
+      const reg = /(?:youtube\.com\/watch\?v=|youtu\.be\/)([^&]+)/  
+      const match = url.match(reg)
+      return match ? `https://www.youtube.com/embed/${match[1]}` : url
+    }
     // Fix: Thêm optional chaining và kiểm tra data tồn tại
     const domainImages = () => {
       return poster?.data?.image_sizes?.backdrop?.w1280 ?? '/'
@@ -55,6 +62,15 @@ function DetailMovie() {
     const styleCustomY = {
       maskImage: 'linear-gradient(90deg, transparent 0, rgba(0, 0, 0, 0.2) 15%, #292929 40%, #292929 80%, transparent 100%)',
       WebkitMaskImage: 'linear-gradient(90deg, transparent 0, rgba(0, 0, 0, 0.2) 15%, #292929 40%, #292929 80%, transparent 100%)',
+    }
+
+    const handleShare = async () => {
+      try {
+        await navigator.clipboard.writeText(window.location.href)
+        alert('Đã copy link!')
+      } catch (err) {
+        console.error('Không thể copy: ', err)
+      }
     }
 
     useEffect(() => {
@@ -98,6 +114,16 @@ function DetailMovie() {
     <div className='text-white mx-20'>
       {/* <Breadcrumb breadcrumb={movie?.data?.breadCrumb}/> */}
       {/* <MetaData /> */}
+      <div onClick={() => setShow(false)} className={`${show ? 'bg-black/60 backdrop-blur-sm opacity-100 origin-center cursor-pointer' : 'opacity-0 pointer-events-none'} fixed inset-0 transition-all duration-250 z-50`} >
+        <div className={`${show ? 'scale-100 opacity-100' : 'scale-85 opacity-0'} transition-all duration-300 absolute w-[60%] h-[70%] bg-black inset-0 m-auto rounded-md overflow-hidden`}>
+          <iframe 
+            src={getYoutubeEmbedUrl(movie?.data?.item?.trailer_url)} 
+            className='w-full h-full'
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowFullScreen
+          />
+        </div>
+      </div>
       <section className='relative h-[800px] w-full aspect-video '>
         <div className=''><StreamingPlayer /></div>
         <div className={`${movieLink ? 'hidden' : 'relative w-full h-full'}`} style={styleCustomY}>
@@ -107,6 +133,7 @@ function DetailMovie() {
               fill 
               sizes='100%' 
               alt={`Poster ${movie?.data?.item?.poster_url || 'movie'}`} 
+              blurDataURL={`${domainImages()}${img[Math.floor(Math.random() * Math.min(img.length, 10))]}`}
               className='object-cover w-full h-full'
               style={{
                 WebkitMaskImage: "linear-gradient(to bottom, #292929 50%, rgba(0,0,0,0) 100%)",
@@ -152,7 +179,7 @@ function DetailMovie() {
           <div className='flex flex-wrap px-4 py-8'>
             <div className='w-3/4 max-w-full flex flex-wrap min-w-0 overflow-hidden h-fit border-r-2 border-(--border-color) px-4'>
               <div className='w-full flex gap-1 pb-10'>
-                <div className='flex 1 w-[150px] h-[250px] relative mr-6 py-4'>
+                <div className='flex 1 w-[180px] h-[280px] relative py-4'>
                   {/* Thumbnail image code here */}
                   <Image 
                     src={
@@ -174,7 +201,7 @@ function DetailMovie() {
                     priority
                   />
                 </div>
-                <div className={`${movieLink ? '' : 'bg-gradient-to-b from-(--bg-sub) to-transparent backdrop-blur-sm'} flex-2 shrink-0 px-3 py-4 rounded-2xl`}>
+                <div className={`${movieLink ? '' : 'bg-gradient-to-b from-(--bg-sub) to-transparent backdrop-blur-sm'} flex-2 shrink-0 p-4 rounded-2xl`}>
                   <h2 className='text-[22px] font-semibold bg-gradient-to-r from-(--bg-main-color) to-white bg-clip-text text-transparent'>
                     {movie?.data?.item?.name || movie?.item?.name || 'Đang tải...'}
                   </h2>
@@ -249,13 +276,13 @@ function DetailMovie() {
                       </i>
                       <Link href={'#episodes'} style={{ scrollBehavior: 'smooth' }} className='font-semibold'>Xem ngay</Link>
                     </button >
-                    <button className='flex flex-1 items-center justify-center gap-2 min-w-[120px] w-fit p-3 rounded-full cursor-pointer'>
+                    <button onClick={() => setShow(true)} className='flex flex-1 items-center justify-center gap-2 min-w-[120px] w-fit p-3 rounded-full cursor-pointer'>
                       <i>
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="size-4">
                           <path d="M3.25 4A2.25 2.25 0 0 0 1 6.25v7.5A2.25 2.25 0 0 0 3.25 16h7.5A2.25 2.25 0 0 0 13 13.75v-7.5A2.25 2.25 0 0 0 10.75 4h-7.5ZM19 4.75a.75.75 0 0 0-1.28-.53l-3 3a.75.75 0 0 0-.22.53v4.5c0 .199.079.39.22.53l3 3a.75.75 0 0 0 1.28-.53V4.75Z" />
                         </svg>
                       </i>
-                      <Link href={'#'}>Trailer</Link>
+                      <label className='cursor-pointer'>Trailer</label>
                     </button>
                     <button className='flex flex-1 items-center justify-center gap-2 min-w-[120px] w-fit p-3 rounded-full cursor-pointer'>
                       <i>
@@ -272,7 +299,7 @@ function DetailMovie() {
                           <path strokeLinecap="round" strokeLinejoin="round" d="M7.217 10.907a2.25 2.25 0 1 0 0 2.186m0-2.186c.18.324.283.696.283 1.093s-.103.77-.283 1.093m0-2.186 9.566-5.314m-9.566 7.5 9.566 5.314m0 0a2.25 2.25 0 1 0 3.935 2.186 2.25 2.25 0 0 0-3.935-2.186Zm0-12.814a2.25 2.25 0 1 0 3.933-2.185 2.25 2.25 0 0 0-3.933 2.185Z" />
                         </svg>
                       </i>
-                     <Link href={'#'}>Chia sẻ</Link>
+                     <Link href={'#'} onClick={handleShare}>Chia sẻ</Link>
                     </button>
                   </div>
                   <div className={`${movieLink ? '' : 'bg-gradient-to-b from-(--bg-sub) to-transparent backdrop-blur-sm'} px-3 py-4 rounded-2xl`}>
@@ -283,7 +310,7 @@ function DetailMovie() {
               </div>
               <Episode movie={movie} />
 
-              {/* <ListMovie title='Có thể bạn sẽ thích'>
+              <ListMovie title='Có thể bạn sẽ thích'>
                 <div className='w-full grid grid-cols-6 gap-3 flex-wrap'>
                     {home?.data?.items?.map((item: any, index: number) => (
                           <MovieCard 
@@ -295,7 +322,7 @@ function DetailMovie() {
                           />
                     ))}
                 </div>
-              </ListMovie> */}
+              </ListMovie>
             </div>
 
             
