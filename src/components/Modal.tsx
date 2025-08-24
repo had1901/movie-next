@@ -46,6 +46,10 @@ function Modal() {
       setIsLogin(!isLogin)
     }
 
+    const backModal = () => {
+        setOpenFormInput(false)
+        setIsLogin(true)
+    }
 
     useEffect(() => {
       if(!showModal) {
@@ -79,7 +83,7 @@ function Modal() {
             className={`absolute inset-0 m-auto bg-white rounded-xl p-6 w-[500px] h-fit max-w-md transform transition-all duration-300 overflow-y-auto 
               ${showModal ? "scale-100 opacity-100" : "scale-35 opacity-0 pointer-events-none"}`}
           >
-            {openFormInput && (<button className='flex items-center gap-2 hover:opacity-80 cursor-pointer' onClick={() => setOpenFormInput(false)}>
+            {openFormInput && (<button className='flex items-center gap-2 hover:opacity-80 cursor-pointer' onClick={backModal}>
                 <i>
                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-4">
                     <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />

@@ -5,7 +5,7 @@ import { onAuthStateChanged } from 'firebase/auth'
 import React, { ReactNode, useEffect, useLayoutEffect, useState } from 'react'
 
 function ClientWrapper({ children }:{ children: ReactNode }) {
-  const [scrolled, setScrolled] = useState<number>(0)
+  const [scrolled, setScrolled] = useState(false)
   const setLoading = useAuth(state => state.setLoading)
   const setUser = useAuth(state => state.setUser)
   const user = useAuth(state => state.user)
@@ -16,11 +16,15 @@ function ClientWrapper({ children }:{ children: ReactNode }) {
   
   useEffect(() => {
     const handleCheckScroll = () => {
-      const y = window.scrollY
-      setScrolled(y > 0 ? y : 0)
+      const y = window.scrollY > 30
+      setScrolled((prev) => {
+        if(prev !== y) return y
+        return prev
+      })
     }
-
     window.addEventListener('scroll', handleCheckScroll)
+    handleCheckScroll()
+
     return () => window.removeEventListener('scroll', handleCheckScroll)
   }, [])
 
@@ -42,7 +46,7 @@ function ClientWrapper({ children }:{ children: ReactNode }) {
 
 
   return (
-    <div className={`${scrolled > 0 ? 'bg-[#0e0e0e]/40 backdrop-blur-xl' : ''} fixed z-30 inset-x-0 top-0 transition`}>
+    <div className={`${scrolled ? 'bg-[#0e0e0e]/40 backdrop-blur-xl' : ''} fixed z-30 inset-x-0 top-0 transition`}>
       {children}
     </div>
   )
