@@ -6,9 +6,8 @@ import SubMenu from './SubMenu'
 import Search from './Search'
 import ClientWrapper from './ClientWrapper'
 import { handleGetMovie } from '@/utils/fetchApi'
-import Popup from './Popup'
+import User from './User'
 import Modal from './Modal'
-import Alert from './Alert'
 const BASE_URL = process.env.NEXT_PUBLIC_API_URL
 
 async function Header() {
@@ -65,7 +64,7 @@ async function Header() {
                         </div>
         
                         <Search />
-                        <Popup />
+                        <User />
                     </div>
                 </div>
             </header>

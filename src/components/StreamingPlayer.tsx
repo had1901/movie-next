@@ -27,7 +27,7 @@ function StreamingPlayer() {
 
   if(movieLink) {
     return ( 
-      <div className={`${light ? 'fixed inset-0 bg-black z-30' : 'bg-black'} rounded-t-2xl mt-3 transition-all duration-200`}>
+      <div className={`${light ? 'fixed inset-0 bg-black z-30' : 'bg-black'} rounded-t-2xl mt-4 transition-all duration-200`}>
         <div className={`${light ? 'absolute w-full' : ''} aspect-16/9 w-[70%] h-[80%] mx-auto mt-16 transition-all duration-200`}>
           <iframe 
             ref={videoRef}

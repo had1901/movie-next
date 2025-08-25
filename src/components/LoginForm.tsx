@@ -1,16 +1,14 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 
-import React, { useEffect, useState } from 'react'
-import { useFormState } from 'react-dom'
-import SubmitButton from './SubmitButton'
+import React, { useActionState, useState } from 'react'
 import { useAuth } from '@/store/store'
 import { handleLoginWithEmailAndPassword } from '@/libs/firebaseAction'
 
 
 
 function LoginForm({ title }:{ title:string }) {
-    const [state, formAction] = useFormState(handleLoginWithEmailAndPassword, { zodError: undefined, firebaseError: null, success: false, values: {} })
+    const [state, formAction, isPending] = useActionState(handleLoginWithEmailAndPassword, { zodError: null, firebaseError: null, success: false, values: null })
     const [errors, setErrors] = useState<any>({})
     const [values, setValues] = useState({ email: "", password: "" })
     const setShowModal = useAuth(state => state.setShowModal)
@@ -26,7 +24,7 @@ function LoginForm({ title }:{ title:string }) {
         setValues(nextValues)
         
         state.firebaseError = null
-        state.zodError = undefined
+        state.zodError = null
     }
 
     // useEffect(() => {
@@ -79,7 +77,13 @@ function LoginForm({ title }:{ title:string }) {
                         <p key={index} className='text-sm text-red-600 mt-1'>{err}</p>
                     ))}
 
-                    <SubmitButton type='login'/>
+                    <button 
+                        type='submit' 
+                        disabled={isPending}
+                        className={`${isPending ? 'cursor-progress' : 'cursor-pointer'} w-full py-2 mt-6 bg-gray-200 rounded-lg hover:bg-gray-300 transition`}
+                    >
+                        {isPending ? 'Đang xử lý...' : 'Đăng nhập'}
+                    </button>
                 </form>
             </div>
                 

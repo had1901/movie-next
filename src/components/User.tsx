@@ -1,12 +1,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 'use client'
-import React, { useEffect } from 'react'
+import React from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useAuth, useNotification } from '@/store/store'
 import { logoutFireBase } from '@/libs/firebaseAction'
-import { onAuthStateChanged } from 'firebase/auth'
-import { auth } from '@/libs/firebase'
 
 
 const modals = [
@@ -15,8 +13,8 @@ const modals = [
               <path d="m11.645 20.91-.007-.003-.022-.012a15.247 15.247 0 0 1-.383-.218 25.18 25.18 0 0 1-4.244-3.17C4.688 15.36 2.25 12.174 2.25 8.25 2.25 5.322 4.714 3 7.688 3A5.5 5.5 0 0 1 12 5.052 5.5 5.5 0 0 1 16.313 3c2.973 0 5.437 2.322 5.437 5.25 0 3.925-2.438 7.111-4.739 9.256a25.175 25.175 0 0 1-4.244 3.17 15.247 15.247 0 0 1-.383.219l-.022.012-.007.004-.003.001a.752.752 0 0 1-.704 0l-.003-.001Z" />
             </svg>
           ),
-    name: 'Phim yêu thích',
-    href: '/auth/favorite'
+    name: 'Phim yêu thích', 
+    href: '/favorite'
 
   },
   {
@@ -25,7 +23,7 @@ const modals = [
             </svg>
           ),
     name: 'Tài khoản',
-    href: '/auth/profile'
+    href: '/profile'
   },
   {
     icon: (<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="size-5">
@@ -40,7 +38,7 @@ const modals = [
 
 
 
-function Popup() {
+function User() {
   const setShowModal = useAuth(state => state.setShowModal)
   const user = useAuth(state => state.user)
   const setUser = useAuth(state => state.setUser)
@@ -92,15 +90,8 @@ function Popup() {
           Đăng nhập
         </button>)
       }
-      
-
-        {/* Modal login */}
-        
-      
-
-      
     </div>
   )
 }
 
-export default Popup
+export default User

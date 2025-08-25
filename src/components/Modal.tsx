@@ -26,7 +26,7 @@ function Modal() {
     const setShowModal = useAuth(state => state.setShowModal)
     const toast = useNotification(state => state.toast)
 
-
+    console.log(showModal)
     const handleLogin = async (provider: AuthProvider) => {
         const loggedInUser = await loginFireBase(provider, () => {
             console.log('Lỗi rồi, gọi Callback...')

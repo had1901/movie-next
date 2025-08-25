@@ -16,6 +16,7 @@ function ClientWrapper({ children }:{ children: ReactNode }) {
   
   useEffect(() => {
     const handleCheckScroll = () => {
+      console.log('Callback')
       const y = window.scrollY > 30
       setScrolled((prev) => {
         if(prev !== y) return y
