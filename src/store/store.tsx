@@ -86,7 +86,7 @@ export const useAuth = create<UserProps>((set) => ({
   user: null,
   showMessage: false,
   showModal: false,
-  loading: false,
+  loading: true,
   setUser: (info) => set(() => ({ user: info })),
   setShowMessage: (boo) => set(() => ({ showMessage: boo })),
   setShowModal: (boo) => set(() => ({ showModal: boo })),

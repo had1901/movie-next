@@ -11,6 +11,7 @@ import { useAuth, useNotification } from '@/store/store'
 import Alert from './Alert'
 import LoginForm from './LoginForm'
 import RegisterForm from './RegisterForm'
+import { redirect } from 'next/navigation'
 
 
 
@@ -26,7 +27,6 @@ function Modal() {
     const setShowModal = useAuth(state => state.setShowModal)
     const toast = useNotification(state => state.toast)
 
-    console.log(showModal)
     const handleLogin = async (provider: AuthProvider) => {
         const loggedInUser = await loginFireBase(provider, () => {
             console.log('Lỗi rồi, gọi Callback...')
@@ -37,7 +37,8 @@ function Modal() {
           setUser(loggedInUser)
           setShowModal(false)
           toast('success', 'Đăng nhập thành công')
-          // window.location.reload()
+          redirect('/')
+
         }
     }
 

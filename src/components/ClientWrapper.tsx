@@ -1,22 +1,20 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client'
+import { setCookie } from '@/libs/cookie'
 import { auth } from '@/libs/firebase'
 import { useAuth, useNotification } from '@/store/store'
-import { onAuthStateChanged } from 'firebase/auth'
+import { getIdToken, onAuthStateChanged } from 'firebase/auth'
 import React, { ReactNode, useEffect, useLayoutEffect, useState } from 'react'
 
 function ClientWrapper({ children }:{ children: ReactNode }) {
   const [scrolled, setScrolled] = useState(false)
-  const setLoading = useAuth(state => state.setLoading)
   const setUser = useAuth(state => state.setUser)
-  const user = useAuth(state => state.user)
+  const setLoading = useAuth(state => state.setLoading)
   const toast = useNotification(state => state.toast)
   const setShowModal = useAuth(state => state.setShowModal)
   
-  console.log('User', user)
-  
   useEffect(() => {
     const handleCheckScroll = () => {
-      console.log('Callback')
       const y = window.scrollY > 30
       setScrolled((prev) => {
         if(prev !== y) return y
@@ -29,20 +27,26 @@ function ClientWrapper({ children }:{ children: ReactNode }) {
     return () => window.removeEventListener('scroll', handleCheckScroll)
   }, [])
 
+  
+
   useLayoutEffect(() => {
-      const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
           console.log('Có user', currentUser)
           setShowModal(false)
-          toast('pending', 'Đang đăng nhập...')
+
           if(currentUser){
-            toast('success', 'Đã đăng nhập')
+            const token = await getIdToken(currentUser, true)
+            await setCookie(token)
             setUser(currentUser)
+            toast('success', 'Đã đăng nhập')
+
           } else {
             toast('pending', 'Đã đăng xuất')
           }
+          setLoading(false)
       })
       return () => unsubscribe()
-  }, [setUser, setShowModal, toast])
+  }, [setUser, setShowModal, setLoading, toast])
 
 
 

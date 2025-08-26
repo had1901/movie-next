@@ -5,6 +5,9 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { useAuth, useNotification } from '@/store/store'
 import { logoutFireBase } from '@/libs/firebaseAction'
+import { clearCookie } from '@/libs/cookie'
+import { useRouter } from 'next/router'
+import { redirect } from 'next/navigation'
 
 
 const modals = [
@@ -14,7 +17,7 @@ const modals = [
             </svg>
           ),
     name: 'Phim yêu thích', 
-    href: '/favorite'
+    href: '/auth/favorite'
 
   },
   {
@@ -23,7 +26,7 @@ const modals = [
             </svg>
           ),
     name: 'Tài khoản',
-    href: '/profile'
+    href: '/auth/profile'
   },
   {
     icon: (<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="size-5">
@@ -45,10 +48,12 @@ function User() {
   const loading = useAuth(state => state.loading)
   const toast = useNotification(state => state.toast)
   const reset = useNotification(state => state.reset)
-  
+
   const handleLogout = async () => {
     await logoutFireBase()
+    await clearCookie()
     setUser(null)
+    redirect('/')
   }
 
 

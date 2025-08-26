@@ -121,7 +121,8 @@ function Poster({ data, hasMark = true, textSize }:{ data: any, hasMark: boolean
             style={{
             backgroundImage: ` url(https://img.ophim.live/uploads/movies/${data.poster_url})`,
             backgroundSize: '100%',
-            backgroundPosition: 'right'
+            backgroundPosition: 'right',
+            backgroundRepeat: 'no-repeat'
           }}>
             <div style={{backgroundImage: `url(/dot.png)`, backgroundRepeat: 'repeat', backgroundSize: '3px'}} className='absolute inset-0 opacity-50 w-full h-full'></div>
           </div>

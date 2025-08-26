@@ -7,6 +7,8 @@ import Image from "next/image";
 import Header from "@/components/Header";
 import Script from 'next/script'
 import Alert from "@/components/Alert";
+import { redirect } from "next/navigation";
+import { getCookie, verifyRoute } from "@/libs/cookie";
 
 // const geistSans = Geist({
 //   variable: "--font-geist-sans",
@@ -94,7 +96,9 @@ export const metadata: Metadata = {
   metadataBase: new URL('https://yourdomain.com'),
 }
 
-export default function RootLayout({ children, params }: Readonly<{ children: React.ReactNode, params: { slug?: string }}>) {
+export default async function RootLayout({ children, params }: Readonly<{ children: React.ReactNode, params: { slug?: string }}>) {
+  
+
   return (
     <html lang="en" data-theme="dark">
       <head>
