@@ -3,7 +3,7 @@
 
 export const handleGetMovie = async ( url: string, ...rest:any[] ): Promise<any> => {
     try {
-        const res = await fetch(url, ...rest, { cache: 'force-cache' })
+        const res = await fetch(url, ...rest, { cache: 'force-cache', next: { revalidate : 120 } })
         if (!res.ok) throw new Error('Lỗi API Movie')
         const data = await res.json()
         return data

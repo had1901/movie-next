@@ -3,6 +3,7 @@
 import React, {  } from 'react'
 import LabelSub from './LabelSub'
 import ButtonViewDetail from './ButtonViewDetail'
+import BlurText from './service/BlurText'
 
 function Poster({ data, hasMark = true, textSize }:{ data: any, hasMark: boolean, textSize: string }) {
     
@@ -98,33 +99,24 @@ function Poster({ data, hasMark = true, textSize }:{ data: any, hasMark: boolean
       // },
     ]
 
-    const styleCustomY = {
-      maskImage: 'linear-gradient(90deg, transparent 0, rgba(0, 0, 0, 0.2) 15%, #292929 40%, #292929 80%, transparent 100%)',
-      WebkitMaskImage: 'linear-gradient(90deg, transparent 0, rgba(0, 0, 0, 0.2) 15%, #292929 40%, #292929 80%, transparent 100%)',
-    }
-    const styleCustomX = {
-      WebkitMaskImage: 'linear-gradient(0deg, transparent 0%, #292929 20%, #292929 80%, transparent)',
-      maskImage: 'linear-gradient(0deg, transparent 0%, #292929 20%, #292929 80%, transparent)',
-      WebkitMaskSize: '100% 100%',
-      maskSize: '100% 100%',
-      
-    }
-  
-
   return (
-    <section className='relative h-full overflow-hidden rounded-2xl'>
-      <div className='h-full' style={hasMark ? styleCustomY : {}}>
-        <div className='relative flex h-full text-white overflow-hidden' style={hasMark ? styleCustomX : {}}>
+    <section className='relative h-full overflow-hidden rounded-2xl z-[99]'>
+      <div className={`${hasMark ? 'mask-image-x ' : ''} h-full `}>
+        <div className={`${hasMark ? 'mask-image-y' : ''} relative flex h-full text-white overflow-hidden`}>
           <div 
-            className='w-full h-full bg-cover bg-center' 
+            className='w-full h-full bg-cover bg-center mask-image-top' 
             data-swiper-parallax-x="-30"
             style={{
-            backgroundImage: ` url(https://img.ophim.live/uploads/movies/${data.poster_url})`,
-            backgroundSize: '100%',
-            backgroundPosition: 'right',
-            backgroundRepeat: 'no-repeat'
-          }}>
-            <div style={{backgroundImage: `url(/dot.png)`, backgroundRepeat: 'repeat', backgroundSize: '3px'}} className='absolute inset-0 opacity-50 w-full h-full'></div>
+              backgroundImage: ` url(https://img.ophim.live/uploads/movies/${data.poster_url})`,
+              backgroundSize: 'cover',
+              backgroundPosition: 'right',
+              backgroundRepeat: 'no-repeat'
+            }}
+          >
+            <div 
+              style={{backgroundImage: `url(/dot.png)`, backgroundRepeat: 'repeat', backgroundSize: '3px'}} 
+              className='absolute inset-0 opacity-50 w-full h-full'>
+            </div>
           </div>
         </div>
       </div>
@@ -134,7 +126,17 @@ function Poster({ data, hasMark = true, textSize }:{ data: any, hasMark: boolean
         <div data-swiper-parallax-x="30" className={`absolute inset-[10%] text-white flex flex-col justify-center gap-2 z-50`}>
            
           <div className='flex items-center gap-2'>
-            <h1 className='font-nosifer inline-block leading-14 px-1 font-bold text-2xl sm:text-2xl md:text-2xl lg:text-3xl xl:text-3xl 2xl:text-4xl bg-(--text-main-yellow) bg-clip-text text-transparent' style={{ fontSize: hasMark ? '' : textSize}}>
+            <h1 
+              className='font-nosifer inline-block leading-14 px-1 font-bold text-2xl sm:text-2xl md:text-2xl lg:text-3xl xl:text-3xl 2xl:text-4xl bg-(--text-main-yellow) bg-clip-text text-transparent' 
+              style={{ fontSize: hasMark ? '' : textSize}}
+            >
+                {/* <BlurText
+                  text={data.name}
+                  delay={100}
+                  animateBy="words"
+                  direction="top"
+                  className="text-2xl mb-8"
+                /> */}
                 {data.name}
             </h1 >
             {data.chieurap && <span className='bg-gradient-to-r from-[#3f57ca] to-[#c650c0] py-[2px] px-1 rounded text-xs mt-1 inline-block'>Phim chiếu rạp</span>}

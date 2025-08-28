@@ -3,7 +3,7 @@
 import { setCookie } from '@/libs/cookie'
 import { auth } from '@/libs/firebase'
 import { useAuth, useNotification } from '@/store/store'
-import { getIdToken, onAuthStateChanged } from 'firebase/auth'
+import { getIdToken, onAuthStateChanged, onIdTokenChanged } from 'firebase/auth'
 import React, { ReactNode, useEffect, useLayoutEffect, useState } from 'react'
 
 function ClientWrapper({ children }:{ children: ReactNode }) {
@@ -30,8 +30,8 @@ function ClientWrapper({ children }:{ children: ReactNode }) {
   
 
   useLayoutEffect(() => {
-      const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
-          console.log('Có user', currentUser)
+      const unsubscribe = onIdTokenChanged(auth, async (currentUser) => {
+          console.log('Có user hoặc token đã refresh', currentUser)
           setShowModal(false)
 
           if(currentUser){
@@ -41,6 +41,7 @@ function ClientWrapper({ children }:{ children: ReactNode }) {
             toast('success', 'Đã đăng nhập')
 
           } else {
+            setUser(null)
             toast('pending', 'Đã đăng xuất')
           }
           setLoading(false)
@@ -51,7 +52,7 @@ function ClientWrapper({ children }:{ children: ReactNode }) {
 
 
   return (
-    <div className={`${scrolled ? 'bg-[#0e0e0e]/40 backdrop-blur-xl' : ''} fixed z-30 inset-x-0 top-0 transition`}>
+    <div className={`${scrolled ? 'bg-[#0e0e0e]/40 backdrop-blur-xl' : ''} fixed z-[9998] inset-x-0 top-0 transition`}>
       {children}
     </div>
   )

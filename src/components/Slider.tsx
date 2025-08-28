@@ -26,7 +26,7 @@ function Slider({ result, ratio = 'aspect-[2/3]', hasMark=false }:{ result: any,
         setCurrentSlide(index)
     }
   return (
-    <div className={`relative ${hasMark ? 'h-[420px] md:h-[600px] xl:h-[900px]' : 'h-[300px] md:h-[400px] xl:h-[500px]'} rounded-3xl`}>
+    <div className={`relative ${hasMark ? 'h-[420px] md:h-[600px] xl:h-[900px]' : 'h-[300px] md:h-[400px] xl:h-[500px]'} rounded-3xl z-[99]`}>
         <Swiper
             onSwiper={(swiper) => (swiperRef.current = swiper)}
             modules={[Pagination, Navigation, Autoplay, Parallax, EffectFade, Thumbs]}
@@ -78,7 +78,7 @@ function Slider({ result, ratio = 'aspect-[2/3]', hasMark=false }:{ result: any,
             >
                 {data.map((item:any, index:number) =>  (
                     <SwiperSlide key={index} onClick={() => handleChangeSlide(index)}>
-                        <div className={`relative rounded-xl overflow-hidden cursor-pointer border-2 hover:opacity-90 ${hasMark ? 'min-h-24 w-full' : ratio} ${currentSlide === index ? 'border-yellow-400' : 'border-gray-300/20'}`}>
+                        <div className={`relative rounded-xl overflow-hidden cursor-pointer border-2 hover:opacity-90 ${hasMark ? 'min-h-24 w-full mask-image-top' : ratio} ${currentSlide === index ? 'border-yellow-400' : 'border-gray-300/20'}`}>
                             <Image 
                                 src={`https://img.ophim.live/uploads/movies/${hasMark ? item.poster_url : item.thumb_url}`} 
                                 alt="thumbnail-slide" 

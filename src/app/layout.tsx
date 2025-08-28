@@ -1,14 +1,12 @@
-import type { Metadata } from "next";
-import { Geist, Geist_Mono, Roboto, Mystery_Quest, Emilys_Candy } from "next/font/google";
+import type { Metadata } from "next"
+import { Geist, Geist_Mono, Roboto, Mystery_Quest, Emilys_Candy } from "next/font/google"
 import "./globals.css";
-import { unstable_ViewTransition as ViewTransition } from 'react';
-import Link from "next/link";
-import Image from "next/image";
-import Header from "@/components/Header";
+import { unstable_ViewTransition as ViewTransition } from 'react'
+import Header from "@/components/layout/Header"
 import Script from 'next/script'
-import Alert from "@/components/Alert";
-import { redirect } from "next/navigation";
-import { getCookie, verifyRoute } from "@/libs/cookie";
+import Alert from "@/components/Alert"
+import DotGrid from "@/components/service/DotGrid";
+import Footer from "@/components/layout/Footer";
 
 // const geistSans = Geist({
 //   variable: "--font-geist-sans",
@@ -144,6 +142,7 @@ export default async function RootLayout({ children, params }: Readonly<{ childr
         <ViewTransition key={params?.slug || 'root'}>
           {children}
         </ViewTransition>
+        <Footer />
       </body>
     </html>
   )

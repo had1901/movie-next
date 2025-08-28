@@ -1,20 +1,76 @@
 'use client'
 import { useAuth } from '@/store/store'
+import { handleGetMovie } from '@/utils/fetchApi'
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
+import ListMovie from '../ListMovie'
+import MovieCard from '../MovieCard'
+const BASE_URL = process.env.NEXT_PUBLIC_API_URL
 
 function FavoriteClient({ user }:{ user: any }) {
-    const userContext = useAuth(state => state.user)
-    const display = user ?? userContext  
+    const [listFavorite, setListFavorite] = useState([])
+    const [result, setResult] = useState<any>([])
+
+    const handleGetMovieInfo = useCallback(async () => {
+          try{
+            const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE}/api/add-favorite`, {
+              method: 'GET',
+              next: { revalidate : 60 },
+              headers: {
+                'User': user.uid
+              }
+            })
     
-    if(display) {
-        return (
-            <div className='p-8'>
-                <h1 className='text-2xl'>Yêu thích</h1>
-                <span>{display.displayName}</span>
-            </div>
-        )
-    }
+            if(!res.ok) {
+              console.log('Không lấy được thông tin phim')
+              return null
+            }
+            const result = await res.json()
+            console.log('Get favorite', result)
+            setListFavorite(result.data)
+          }catch(e){
+            console.log(e)
+          }
+    },[user?.uid])
+
+    useEffect(() => {
+        if(!user?.uid) return
+        handleGetMovieInfo()
+    },[user?.uid, handleGetMovieInfo])
+
+
+    useEffect(() => {
+        const getListMovieFavorite = async () => {
+            const res = await Promise.all(listFavorite.map((item) => handleGetMovie(`${BASE_URL}/v1/api/phim/${item}`)))
+            return res
+        }
+        
+        getListMovieFavorite()
+            .then((data) => setResult(data))
+            .catch((err) => console.log(err))
+    },[listFavorite])
+    
+    return (
+        <div className='flex-1 p-8'>
+            <ListMovie title='Danh sách phim đã thích' spacing=''>
+                {result.length > 0
+                ?   (<div className='w-full grid grid-cols-6 gap-3 flex-wrap'>
+                        {result?.map((item: any, index: number) => (
+                            <MovieCard 
+                                key={index}
+                                item={item.data.item} 
+                                imgDomain={result?.data?.APP_DOMAIN_CDN_IMAGE} 
+                                index={index} 
+                                clippath={false} 
+                            />
+                        ))}
+                    </div>)
+                :   (<div>Đang tải...</div>)
+                }
+            </ListMovie>
+        </div>
+    )
+    
 }
 
 export default FavoriteClient

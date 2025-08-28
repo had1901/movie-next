@@ -2,7 +2,6 @@
 'use server'
 import { cookies } from 'next/headers'
 import { adminAuth } from './firebaseAdminConfig'
-import { redirect } from 'next/navigation'
 
 
 
@@ -44,19 +43,21 @@ export async function verifyToken(token:string) {
 
 
 
-export async function verifyRoute(token: string) {
+export async function fetchVerifyRoute() {
+    const cookieHeader = await getCookie() as string
+    // console.log('Cookie', cookieHeader)
     try{
-        const res = await fetch(`http://localhost:3000/api/verify`, {
-            cache: "no-store",
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE}/api/verify`, {
             credentials: "include",
+            next: { revalidate : 60 },
             headers: { 
-                'Authorization': `Bearer ${token}`, 
+                'Authorization': `Bearer ${cookieHeader}`, 
                 'Content-Type': 'application/json',
             },
         })
 
         if(!res.ok || res.status === 401) {
-            redirect('/')
+            return null
         }
 
         const user = await res.json()
@@ -66,3 +67,4 @@ export async function verifyRoute(token: string) {
         return null
     }
 }
+

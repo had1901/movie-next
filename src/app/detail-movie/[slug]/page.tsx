@@ -3,13 +3,13 @@
 import Breadcrumb from '@/components/Breadcrumb'
 import Content from '@/components/Content'
 import Image from 'next/image'
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import Episode from '@/components/Episode'
 import Poster from '@/components/Poster'
 import CustomVideo from '@/components/CustomPlayer'
 import StreamingPlayer from '@/components/StreamingPlayer'
 import { useParams } from 'next/navigation'
-import { useLight, useMovieLink } from '@/store/store'
+import { useAuth, useLight, useMovieLink, useNotification } from '@/store/store'
 import Link from 'next/link'
 import { handleGetMovie } from '@/utils/fetchApi'
 import Slider from '@/components/Slider'
@@ -28,10 +28,18 @@ function DetailMovie() {
     const [home, setHome] = useState<any>({})
     const [loading, setLoading] = useState(true)
     const [show, setShow] = useState(false)
+    const [listFavorite, setListFavorite] = useState([])
+
     const movieLink = useMovieLink(state => state.link)
-    
+    const user = useAuth(state => state.user)
+    const toast = useNotification(state => state.toast)
+
     console.log('Phim', movie)
 
+    // check phim có trong danh sách yêu thích của user không
+    const hasFavorite = listFavorite.find(item => item === slug)
+
+    // convert url video
     const getYoutubeEmbedUrl = (url?: string) => {
       if (!url) return ''
       const reg = /(?:youtube\.com\/watch\?v=|youtu\.be\/)([^&]+)/  
@@ -67,11 +75,95 @@ function DetailMovie() {
     const handleShare = async () => {
       try {
         await navigator.clipboard.writeText(window.location.href)
-        alert('Đã copy link!')
+        toast('success', 'Đã copy link!')
       } catch (err) {
-        console.error('Không thể copy: ', err)
+        console.log(err)
+        toast('warning', 'Lỗi copy!')
       }
     }
+
+    const handleGetMovieInfo = useCallback(async () => {
+      try{
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE}/api/add-favorite`, {
+          method: 'GET',
+          next: { revalidate : 60 },
+          headers: {
+            'User': user.uid
+          }
+        })
+
+        if(!res.ok) {
+          console.log('Không lấy được thông tin phim')
+          return null
+        }
+        const result = await res.json()
+        console.log('Get favorite', result)
+        setListFavorite(result.data)
+      }catch(e){
+        console.log(e)
+      }
+    },[user?.uid])
+
+    const handleAddFavorite = async () => {
+      if(user?.id) {
+        toast('warning', 'Vui lòng đăng nhập!!!')
+      }
+
+      try{
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE}/api/add-favorite`, {
+          method: 'POST',
+          next: { revalidate : 60 },
+          body: JSON.stringify({ 
+            slug: slug,
+            userId: user.uid
+            })
+        })
+
+        if(!res.ok) {
+          console.log('Lỗi thêm vào danh sách yêu thích')
+          return null
+        }
+        const result = await res.json()
+        console.log('result', result)
+        toast('success', result.message)
+        handleGetMovieInfo()
+      }catch(e){
+        console.log(e)
+      }
+      
+    }
+
+    const handleRemoveFavorite = async () => {
+      if(user?.uid) {
+        try{
+          const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE}/api/add-favorite`, {
+            method: 'DELETE',
+            next: { revalidate : 60 },
+            body: JSON.stringify({ 
+              slug: slug,
+              userId: user.uid
+             })
+          })
+  
+          if(!res.ok) {
+            console.log('Lỗi xóa phim yêu thích')
+            return null
+          }
+          const result = await res.json()
+          console.log('result', result)
+          handleGetMovieInfo()
+          toast('success', result.message)
+        }catch(e){
+          console.log(e)
+        }
+      }
+    }
+
+    useEffect(() => {
+      if(user?.uid) {
+        handleGetMovieInfo()
+      }
+    },[user?.uid, toast, handleGetMovieInfo])
 
     useEffect(() => {
       (async () => {
@@ -99,7 +191,9 @@ function DetailMovie() {
         }
       })()
     }, [slug])
+
     
+
     if (loading) {
       return (
         <div className='text-white py-3 mx-40'>
@@ -285,13 +379,26 @@ function DetailMovie() {
                       <label className='cursor-pointer'>Trailer</label>
                     </button>
                     <button className='flex flex-1 items-center justify-center gap-2 min-w-[120px] w-fit p-3 rounded-full cursor-pointer'>
-                      <i>
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-4">
-                          <path strokeLinecap="round" strokeLinejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z" />
-                        </svg>
-
-                      </i>
-                      <Link href={'#'}>Yêu thích</Link>
+                      {hasFavorite 
+                      ? (
+                        <div onClick={handleRemoveFavorite} className='flex items-center justify-center gap-2'>
+                          <i className='text-[#e20116]'>
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="size-4">
+                              <path d="m11.645 20.91-.007-.003-.022-.012a15.247 15.247 0 0 1-.383-.218 25.18 25.18 0 0 1-4.244-3.17C4.688 15.36 2.25 12.174 2.25 8.25 2.25 5.322 4.714 3 7.688 3A5.5 5.5 0 0 1 12 5.052 5.5 5.5 0 0 1 16.313 3c2.973 0 5.437 2.322 5.437 5.25 0 3.925-2.438 7.111-4.739 9.256a25.175 25.175 0 0 1-4.244 3.17 15.247 15.247 0 0 1-.383.219l-.022.012-.007.004-.003.001a.752.752 0 0 1-.704 0l-.003-.001Z" />
+                            </svg>
+                          </i>
+                          <Link href={'#'}>Đã thích</Link>
+                        </div>
+                      ) : (
+                        <div onClick={handleAddFavorite} className='flex items-center justify-center gap-2'>
+                          <i>
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-4">
+                              <path strokeLinecap="round" strokeLinejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z" />
+                            </svg>
+                          </i>
+                          <Link href={'#'}>Yêu thích</Link>
+                        </div>
+                      )}
                     </button>
                     <button className='flex flex-1 items-center justify-center gap-2 min-w-[120px] w-fit p-3 rounded-full cursor-pointer'>
                       <i>
@@ -310,7 +417,7 @@ function DetailMovie() {
               </div>
               <Episode movie={movie} />
 
-              <ListMovie title='Có thể bạn sẽ thích'>
+              <ListMovie title='Có thể bạn sẽ thích' spacing='mt-14'>
                 <div className='w-full grid grid-cols-6 gap-3 flex-wrap'>
                     {home?.data?.items?.map((item: any, index: number) => (
                           <MovieCard 

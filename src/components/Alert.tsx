@@ -32,7 +32,7 @@ function Alert({ children }: AlertProps) {
     <>
       <div className={`${status && renderStatus()} ${show ? 'opacity-100 translate-y-6' : 'opacity-0 translate-y-0 pointer-events-none'} 
         absolute top-0 left-0 right-0 mx-auto transition duration-400 w-fit h-10 text-sm font-semibold 
-        flex items-center justify-center text-white rounded-xl shadow-2xl py-[6px] text-md text-center px-4 z-50`}>
+        flex items-center justify-center text-white rounded-xl shadow-2xl py-[6px] text-md text-center px-4 z-[9999]`}>
         {message}
       </div>
       {children}

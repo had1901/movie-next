@@ -6,16 +6,17 @@ import Image from 'next/image'
 import { useAuth } from '@/store/store'
 import InputRadio from '@/app/auth/_components/InputRadio'
 
+import DotGrid from '../service/DotGrid'
 
 
 function ProfileClient({ user }:{ user: any }) {
   const userContext = useAuth(state => state.user)
   const display = user ?? userContext 
-  console.log('display', display)
+  
   if(display) {
     return (
-      <section className=' p-8 rounded-2xl'>
-          <div className="flex items-center text-white"> 
+      <section className='flex-1 p-8 rounded-2xl'>
+          <div className="relative flex items-center text-white z-[50]"> 
             {/* Content */}
             <main className="w-[500px]">
               <h2 className="text-xl font-semibold mb-6">Tài khoản</h2>
@@ -28,7 +29,7 @@ function ProfileClient({ user }:{ user: any }) {
                     type="email"
                     value={display && display.email || ''}
                     readOnly
-                    className="w-full rounded-md px-3 py-2 bg-[#222] border border-gray-700 text-sm"
+                    className="w-full rounded-md px-3 py-2 bg-[#222] border border-gray-700 text-sm cursor-not-allowed outline-none opacity-70"
                   />
                 </div>
       

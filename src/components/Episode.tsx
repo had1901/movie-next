@@ -34,11 +34,11 @@ function Episode({ movie }:{ movie: any }) {
     },[servers, serverIndex])
 
     const chunks = useMemo(() => handleSliceArray(serverData, 100), [serverData])
-    console.log('chunks', chunks)
+    // console.log('chunks', chunks)
 
     const visibleEpisodes = chunks[chunkIndex] ?? []
 
-    console.log('visibleEpisodes', visibleEpisodes)
+    // console.log('visibleEpisodes', visibleEpisodes)
     const handleChangeServer = (index:number) => {
         setServerIndex(index)
         setChunkIndex(0)

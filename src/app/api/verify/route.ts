@@ -16,7 +16,7 @@ export async function GET() {
     
     try{
         const decoded = await adminAuth.verifyIdToken(token)
-        console.log('decoded', decoded)
+        console.log('user-decode', decoded)
         return NextResponse.json({ 
             uid: decoded.uid, 
             email: decoded.email, 

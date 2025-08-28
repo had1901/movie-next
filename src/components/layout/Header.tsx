@@ -2,12 +2,12 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
-import SubMenu from './SubMenu'
-import Search from './Search'
-import ClientWrapper from './ClientWrapper'
+import SubMenu from '../SubMenu'
+import Search from '../Search'
+import ClientWrapper from '../ClientWrapper'
 import { handleGetMovie } from '@/utils/fetchApi'
-import User from './User'
-import Modal from './Modal'
+import User from '../User'
+import Modal from '../Modal'
 const BASE_URL = process.env.NEXT_PUBLIC_API_URL
 
 async function Header() {
@@ -15,7 +15,7 @@ async function Header() {
         handleGetMovie(`${BASE_URL}/v1/api/the-loai`),
         handleGetMovie(`${BASE_URL}/v1/api/quoc-gia`)
     ])
-
+    console.log('Re-render header')
     const navigations = [
         { label: 'Trang chủ', href: '/' },
         { label: 'Thể loại', href: '#', children: () => {
@@ -39,14 +39,14 @@ async function Header() {
     ]
 
   return (
-    <div>
+    <>
         <ClientWrapper>
             <header>
                 <div className="container mx-auto">
                     <div className="flex items-center justify-between gap-6 h-18">
                         <Link href={'/'}>
                             <Image 
-                                src={'/logo-chillguy.png'} 
+                                src={'/logo-movies.png'} 
                                 alt="logo"
                                 width={100}
                                 height={100}
@@ -70,7 +70,7 @@ async function Header() {
             </header>
         </ClientWrapper>
         <Modal />
-    </div>
+    </>
   )
 }
 

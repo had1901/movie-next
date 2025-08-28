@@ -79,7 +79,7 @@ function User() {
             <ul className='pt-2 text-sm'>
               {modals.map((modal:any, index:number) => (
                 <li key={index}>
-                  <Link href={modal.href || '#'} className='flex items-center gap-2 py-3' onClick={() => modal.render(handleLogout)}>
+                  <Link href={modal.href || '#'} className='flex items-center gap-2 py-3' onClick={() => modal?.render(handleLogout)}>
                     <i>
                       {modal.icon}
                     </i>

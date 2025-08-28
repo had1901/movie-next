@@ -58,6 +58,11 @@ button, input, select, a {
   border: 1px solid var(--bg-sub);
 } */
 
+/* Loại bỏ animation trong trang loading */
+.loading-container {
+  view-transition-name: none;
+}
+
 input[type="number"]::-webkit-outer-spin-button,
 input[type="number"]::-webkit-inner-spin-button {
   -webkit-appearance: none;
@@ -221,4 +226,71 @@ input[type="number"] {
 
 .custom-scrollbar::-webkit-scrollbar-track {
   background: transparent;
+}
+
+
+
+
+/* Mask theo chiều ngang (x) */
+.mask-image-x {
+  mask-image: linear-gradient(
+    90deg,
+    transparent 0,
+    rgba(0, 0, 0, 0.2) 15%,
+    #292929 40%,
+    #292929 80%,
+    transparent 100%
+  );
+  -webkit-mask-image: linear-gradient(
+    90deg,
+    transparent 0,
+    rgba(0, 0, 0, 0.2) 15%,
+    #292929 40%,
+    #292929 80%,
+    transparent 100%
+  );
+}
+
+/* Mask theo chiều dọc (y) */
+.mask-image-y {
+  mask-image: linear-gradient(
+    0deg,
+    transparent 0%,
+    #292929 20%,
+    #292929 80%,
+    transparent
+  );
+  -webkit-mask-image: linear-gradient(
+    0deg,
+    transparent 0%,
+    #292929 20%,
+    #292929 80%,
+    transparent
+  );
+  mask-size: 100% 100%;
+  -webkit-mask-size: 100% 100%;
+}
+
+.mask-image-top {
+  mask-image: linear-gradient(
+    to bottom,
+    transparent 0%,
+    #292929 10%,
+    #292929 50%
+  );
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    transparent 0%,
+    #292929 10%,
+    #292929 50%
+  );
+  mask-size: 100% 100%;
+  -webkit-mask-size: 100% 100%;
+}
+
+
+canvas {
+  display: block;
+  /* background: radial-gradient(ellipse at bottom, #1b2735 0%, #090a0f 100%); */
+  background: radial-gradient(ellipse at bottom, #212325 0%, #000000 100%);
 }

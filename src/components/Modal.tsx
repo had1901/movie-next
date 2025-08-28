@@ -100,7 +100,7 @@ function Modal() {
               </i>
             </div>
             <div className='flex justify-center items-center'>
-              <Image src={'/logo-chillguy.png'} alt='logo' width={100} height={80} className=''/>
+              <Image src={'/logo-movies.png'} alt='logo' width={100} height={80} className=''/>
             </div>
             <h2 className="text-xl text-[#f58f89] font-semibold text-center mb-6">
               <span>&#x2764;</span>

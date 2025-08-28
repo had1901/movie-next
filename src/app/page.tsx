@@ -2,9 +2,11 @@
 import HeroMovie from "@/components/HeroMovie";
 import HistoryViewed from "@/components/HistoryViewed";
 import ListMovie from "@/components/ListMovie";
+import DotGrid from "@/components/service/DotGrid";
 import Slider from "@/components/Slider";
 import SwiperCarousel from "@/components/SwiperCarousel";
 import { handleGetMovie } from "@/utils/fetchApi";
+
 const BASE_URL = process.env.NEXT_PUBLIC_API_URL
 
 
@@ -45,12 +47,26 @@ export default async function Home() {
 
   return (
     <div className="w-full">
+      
       <div className="px-10">
         <Slider result={comingMovies} hasMark ratio="aspect-[2/3]"/>
       </div>
       <div className="container mx-auto">
-        
-      <ListMovie title="Phim hành động chiếu rạp">
+      
+      {/* <div className='fixed inset-0'>
+          <DotGrid
+            dotSize={2}
+            gap={20}
+            baseColor="#6b6b6b"
+            activeColor="#5227FF"
+            proximity={120}
+            shockRadius={250}
+            shockStrength={5}
+            resistance={500}
+            returnDuration={1.5}
+          />
+      </div> */}
+      <ListMovie title="Phim hành động chiếu rạp" >
         <SwiperCarousel movies={collectionMovies} clippath/>
       </ListMovie>
       
