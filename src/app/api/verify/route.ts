@@ -5,7 +5,7 @@ import { NextRequest, NextResponse } from "next/server"
 
 
 export async function GET() {
-    const tokenCookie = (await cookies()).get('__session__')?.value
+    const tokenCookie = (await cookies()).get('session')?.value
     const tokenHeader = (await headers()).get('Authorization')?.split(" ")[1]
     
     const token = tokenCookie || tokenHeader
