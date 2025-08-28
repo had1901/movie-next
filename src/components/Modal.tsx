@@ -9,8 +9,8 @@ import React, { useEffect, useState } from 'react'
 import { useAuth, useNotification } from '@/store/store'
 
 import Alert from './Alert'
-import LoginForm from './LoginForm'
-import RegisterForm from './RegisterForm'
+import LoginForm from './form/LoginForm'
+import RegisterForm from './form/RegisterForm'
 import { redirect } from 'next/navigation'
 
 

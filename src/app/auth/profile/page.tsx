@@ -1,6 +1,6 @@
 
 import React from 'react'
-import ProfileClient from '@/components/user/ProfileClient'
+import ProfileClient from '@/components/protectedAuth/ProfileClient'
 import { fetchVerifyRoute } from '@/libs/cookie'
 import { redirect } from 'next/navigation'
 

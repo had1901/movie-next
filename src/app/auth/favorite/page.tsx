@@ -1,4 +1,4 @@
-import FavoriteClient from '@/components/user/FavoriteClient'
+import FavoriteClient from '@/components/protectedAuth/FavoriteClient'
 import React from 'react'
 import { fetchVerifyRoute } from '@/libs/cookie'
 import { redirect } from 'next/navigation'
