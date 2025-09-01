@@ -19,6 +19,7 @@ export const config = {
   matcher: [
     "/auth/profile/:path*", 
     "/auth/favorite/:path*",
+    "/auth/notification/:path*",
     "/auth/admin/:path*"
   ],
 }

@@ -1,5 +1,5 @@
 'use client'
-import React, { useEffect, useRef } from "react";
+import React, { ReactNode, useEffect, useRef } from "react";
 import { Renderer, Camera, Geometry, Program, Mesh } from "ogl";
 
 interface ParticlesProps {
@@ -15,6 +15,7 @@ interface ParticlesProps {
   cameraDistance?: number;
   disableRotation?: boolean;
   className?: string;
+  children?: ReactNode
 }
 
 const defaultColors: string[] = ["#ffffff", "#ffffff", "#ffffff"];
@@ -103,6 +104,7 @@ const Particles: React.FC<ParticlesProps> = ({
   cameraDistance = 20,
   disableRotation = false,
   className,
+  children
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const mouseRef = useRef<{ x: number; y: number }>({ x: 0, y: 0 });
@@ -240,7 +242,9 @@ const Particles: React.FC<ParticlesProps> = ({
     <div
       ref={containerRef}
       className={`relative w-full h-full ${className}`}
-    />
+    >
+      {children}
+    </div>
   );
 };
 

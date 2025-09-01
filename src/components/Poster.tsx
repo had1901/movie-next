@@ -4,9 +4,16 @@ import React, {  } from 'react'
 import LabelSub from './LabelSub'
 import ButtonViewDetail from './ButtonViewDetail'
 import BlurText from './service/BlurText'
+import Content from './Content'
+import { handleGetMovie } from '@/utils/fetchApi'
+const BASE_URL = process.env.NEXT_PUBLIC_API_URL
 
 function Poster({ data, hasMark = true, textSize }:{ data: any, hasMark: boolean, textSize: string }) {
-    
+    // console.log('post', data)
+    // const { slug } = data
+    // const listThumbnail = await handleGetMovie(`${BASE_URL}/v1/api/phim/${slug}/images`)
+
+    // console.log('list-post', listThumbnail)
     const icons = [
       {
         label: data.year,
@@ -163,7 +170,8 @@ function Poster({ data, hasMark = true, textSize }:{ data: any, hasMark: boolean
             <span  className='font-bold'>Đang phát: </span>
             <span style={{ backgroundImage: 'var(--bg-main-gradient)'}} className='font-semibold ml-1 py-1 px-2 rounded'>{data.episode_current === 'Trailer' ? 'Chưa phát hành' : data.episode_current}</span>
           </p>
-  
+          
+          {/* <Content content={data.content} /> */}
           <div className='flex items-center gap-10'>
             {buttonsView.map((btn, i) => (
                 <ButtonViewDetail key={i} icon={btn.icon()} label={btn.label} type={btn.type} originalURL={data.trailer_url} slug={data.slug} />

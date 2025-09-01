@@ -24,4 +24,10 @@ export const providerGithub = new GithubAuthProvider()
 // const analytics = getAnalytics(app)
 
 
+// config google
+providerGoogle.setCustomParameters({
+  prompt: "select_account" // luôn bắt chọn tài khoản
+})
+
+
 

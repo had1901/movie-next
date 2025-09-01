@@ -1,10 +1,11 @@
 'use client'
+import { clearCookie } from '@/libs/cookie'
 import { logoutFireBase } from '@/libs/firebaseAction'
 import { useAuth, useNotification } from '@/store/store'
 import { Bell, Heart, Infinity, LogOut, Plus, User } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
-import { usePathname } from 'next/navigation'
+import { redirect, usePathname } from 'next/navigation'
 import React, { Suspense, useState } from 'react'
 
 
@@ -26,13 +27,15 @@ function Sidebar() {
     
     const handleLogout = async () => {
         await logoutFireBase()
+        await clearCookie()
         setUser(null)
         toast('pending', 'Đã đăng xuất')
+        redirect('/')
     }
 
     // if(user) {
       return (
-        <aside className="relative w-80 bg-(--bg-sub)/50 backdrop-blur-xs p-8 flex flex-col justify-between overflow-hidden rounded-2xl z-50">
+        <aside className="w-80 bg-(--bg-sub)/40 backdrop-blur-xs p-8 flex flex-col justify-between overflow-hidden rounded-2xl">
                 <div>
                   <h2 className="text-lg font-semibold mb-6">Quản lý tài khoản</h2>
                   <nav className="flex flex-col space-y-0">

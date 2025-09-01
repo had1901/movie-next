@@ -46,10 +46,10 @@ async function Header() {
                     <div className="flex items-center justify-between gap-6 h-18">
                         <Link href={'/'}>
                             <Image 
-                                src={'/logo-movies.png'} 
+                                src={'/logo-movies1.png'} 
                                 alt="logo"
-                                width={100}
-                                height={100}
+                                width={140}
+                                height={160}
                                 className="h-full w-auto"
                                 priority 
                             />

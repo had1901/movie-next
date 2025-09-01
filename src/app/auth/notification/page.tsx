@@ -1,11 +1,13 @@
+import EmptyData from '@/components/EmptyData'
+import ListMovie from '@/components/ListMovie'
 import React from 'react'
 
 function Notification() {
   return (
-    <div className='p-8'>
-        <h1 className='text-2xl'>Thông báo</h1>
-        <span>...</span>
-    </div>
+      <div>
+          <h1 className='mb-3 text-xl'>Thông báo</h1>
+          <EmptyData title='Chưa có thông báo'/>
+      </div>
   )
 }
 

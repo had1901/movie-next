@@ -96,7 +96,7 @@ export const metadata: Metadata = {
 
 export default async function RootLayout({ children, params }: Readonly<{ children: React.ReactNode, params: { slug?: string }}>) {
   
-
+  console.log('Layout global')
   return (
     <html lang="en" data-theme="dark">
       <head>
@@ -139,10 +139,12 @@ export default async function RootLayout({ children, params }: Readonly<{ childr
         <Alert>
           <Header />
         </Alert>
-        <ViewTransition key={params?.slug || 'root'}>
+        <ViewTransition 
+          // key={params?.slug || 'root'}
+        >
           {children}
         </ViewTransition>
-        <Footer />
+        {/* <Footer /> */}
       </body>
     </html>
   )

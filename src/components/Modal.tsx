@@ -77,11 +77,11 @@ function Modal() {
     <div
         onClick={() => setShowModal(false)}
         className={`${showModal ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'} 
-                    fixed inset-0 bg-black/50 text-(--text-main-color) z-50 transition-all duration-300 `}
+                    fixed inset-0 bg-black/50 text-(--text-main-color) z-[888] transition-all duration-300 `}
         >
           <div
             onClick={(e) => e.stopPropagation()} // Ngăn click trong modal đóng
-            className={`absolute inset-0 m-auto bg-white rounded-xl p-6 w-[500px] h-fit max-w-md transform transition-all duration-300 overflow-y-auto 
+            className={`absolute inset-0 m-auto bg-white backdrop-blur-2xl rounded-xl shadow-2xl p-6 w-[500px] h-fit max-w-md transform transition-all duration-300 overflow-y-auto 
               ${showModal ? "scale-100 opacity-100" : "scale-35 opacity-0 pointer-events-none"}`}
           >
             {openFormInput && (<button className='flex items-center gap-2 hover:opacity-80 cursor-pointer' onClick={backModal}>
@@ -99,12 +99,16 @@ function Modal() {
                 </svg>
               </i>
             </div>
-            <div className='flex justify-center items-center'>
-              <Image src={'/logo-movies.png'} alt='logo' width={100} height={80} className=''/>
+            <div className='flex justify-center gap-2 items-center mb-2 text-[#f58f89]'>
+              <span>&#x2764;</span>
+
+              <Image src={'/logo-movies1.png'} alt='logo' width={80} height={80} className='text-amber-700 bg-[#f58f89] rounded-full overflow-hidden'/>
+              <span>&#x2764;</span>
+              
             </div>
             <h2 className="text-xl text-[#f58f89] font-semibold text-center mb-6">
               <span>&#x2764;</span>
-              <span className='mx-2 inline-block '>{isLogin ? 'Đăng nhập vào Chill Guy' : 'Đăng ký vào Chill Guy'}</span>
+              <span className='mx-2 inline-block '>{isLogin ? 'Đăng nhập' : 'Đăng ký'}</span>
               <span>&#x2764;</span>
             </h2>
 
@@ -117,7 +121,7 @@ function Modal() {
                 opacity-80 hover:opacity-100 hover:bg-[#ffe5bb] hover:border-[#ffe5bb] cursor-pointer"
               >
                 <Image src="/user-logo.svg" alt="logo-user" width={20} height={20}/>
-                <span className='absolute left-1/2 top-1/2 -translate-1/2'>Sử dụng Email</span>
+                <span className='absolute left-1/2 top-1/2 -translate-1/2'>Sử dụng Email / Password</span>
               </button>
 
               <button

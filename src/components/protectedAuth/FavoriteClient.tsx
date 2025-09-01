@@ -5,12 +5,13 @@ import { handleGetMovie } from '@/utils/fetchApi'
 import React, { useCallback, useEffect, useState } from 'react'
 import ListMovie from '../ListMovie'
 import MovieCard from '../MovieCard'
+import EmptyData from '../EmptyData'
 const BASE_URL = process.env.NEXT_PUBLIC_API_URL
 
 function FavoriteClient({ user }:{ user: any }) {
     const [listFavorite, setListFavorite] = useState([])
     const [result, setResult] = useState<any>([])
-
+    console.log('aaa', result)
     const handleGetMovieInfo = useCallback(async () => {
           try{
             const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE}/api/add-favorite`, {
@@ -51,23 +52,24 @@ function FavoriteClient({ user }:{ user: any }) {
     },[listFavorite])
     
     return (
-        <div className='flex-1 p-8'>
-            <ListMovie title='Danh sách phim đã thích' spacing=''>
-                {result.length > 0
-                ?   (<div className='w-full grid grid-cols-6 gap-3 flex-wrap'>
-                        {result?.map((item: any, index: number) => (
-                            <MovieCard 
-                                key={index}
-                                item={item.data.item} 
-                                imgDomain={result?.data?.APP_DOMAIN_CDN_IMAGE} 
-                                index={index} 
-                                clippath={false} 
-                            />
-                        ))}
-                    </div>)
-                :   (<div>Đang tải...</div>)
-                }
-            </ListMovie>
+        <div>
+          <h1 className='mb-3 text-xl'>Danh sách phim đã thích</h1>
+          <div>
+            {result.length > 0
+            ? (<div className='w-full grid grid-cols-6 gap-3 flex-wrap'>
+                    {result?.map((item: any, index: number) => (
+                        <MovieCard 
+                            key={index}
+                            item={item.data.item} 
+                            imgDomain={result?.data?.APP_DOMAIN_CDN_IMAGE} 
+                            index={index} 
+                            clippath={false} 
+                        />
+                    ))}
+                </div>)
+            : <EmptyData title='Chưa có phim yêu thích'/>
+            }
+          </div>
         </div>
     )
     

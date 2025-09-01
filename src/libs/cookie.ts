@@ -45,7 +45,7 @@ export async function verifyToken(token:string) {
 
 export async function fetchVerifyRoute() {
     const cookieHeader = await getCookie() as string
-    console.log('Cookie', cookieHeader)
+    // console.log('Cookie', cookieHeader)
     try{
         const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE}/api/verify`, {
             credentials: "include",
