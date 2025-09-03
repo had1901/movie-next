@@ -144,7 +144,7 @@ export default async function RootLayout({ children, params }: Readonly<{ childr
         >
           {children}
         </ViewTransition>
-        {/* <Footer /> */}
+        <Footer />
       </body>
     </html>
   )

@@ -52,11 +52,11 @@ function FavoriteClient({ user }:{ user: any }) {
     },[listFavorite])
     
     return (
-        <div>
+        <div className='p-3 lg:p-0'>
           <h1 className='mb-3 text-xl'>Danh sách phim đã thích</h1>
           <div>
             {result.length > 0
-            ? (<div className='w-full grid grid-cols-6 gap-3 flex-wrap'>
+            ? (<div className='w-full grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-6 gap-3 flex-wrap'>
                     {result?.map((item: any, index: number) => (
                         <MovieCard 
                             key={index}

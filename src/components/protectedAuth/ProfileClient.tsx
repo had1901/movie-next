@@ -16,9 +16,21 @@ function ProfileClient({ user }:{ user: any }) {
   if(display) {
     return (
       <section className='flex-1 p-8 rounded-2xl'>
-          <div className="relative flex items-center text-white z-[50]"> 
+          <div className="relative text-white z-[50]"> 
+            {/* <div className="relative ml-10 ">
+              <Image
+                  width={150}
+                  height={150}
+                  alt='avatar'
+                  src={display && display.photoURL || 'https://wallpapers-clan.com/wp-content/uploads/2023/08/attack-on-titan-sad-mikasa-sticker-preview.jpg'}
+                  className="w-28 h-28 rounded-full border-4 border-white shadow-lg inline-block object-cover"
+              />
+              <button className="absolute flex items-center opacity-0 hover:opacity-100 justify-center cursor-pointer inset-0 bg-[#222]/50 text-xs px-2 py-1 rounded-full transition duration-100">
+                <ImageUp />
+              </button>
+            </div> */}
             {/* Content */}
-            <main className="w-[500px]">
+            <main className="min-w-0 max-w-[500px]">
               <h2 className="text-xl font-semibold mb-6">Tài khoản</h2>
               <p className="opacity-80 mb-8 text-sm">Cập nhật thông tin tài khoản</p>
       
@@ -44,7 +56,7 @@ function ProfileClient({ user }:{ user: any }) {
       
                 <div>
                   <label className="block mb-2 text-sm">Nhân vật</label>
-                  <div className="flex gap-4 text-sm">
+                  <div className="flex flex-wrap gap-4 text-sm">
                     <InputRadio />
                   </div>
                 </div>
@@ -66,18 +78,7 @@ function ProfileClient({ user }:{ user: any }) {
             </main>
       
             {/* Avatar */}
-            <div className="relative ml-10 ">
-              <Image
-                  width={150}
-                  height={150}
-                  alt='avatar'
-                  src={display && display.photoURL || 'https://wallpapers-clan.com/wp-content/uploads/2023/08/attack-on-titan-sad-mikasa-sticker-preview.jpg'}
-                  className="w-28 h-28 rounded-full border-4 border-white shadow-lg inline-block object-cover"
-              />
-              <button className="absolute flex items-center opacity-0 hover:opacity-100 justify-center cursor-pointer inset-0 bg-[#222]/50 text-xs px-2 py-1 rounded-full transition duration-100">
-                <ImageUp />
-              </button>
-            </div>
+            
           </div>
       </section>
     )

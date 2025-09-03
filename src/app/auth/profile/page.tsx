@@ -9,7 +9,6 @@ import { redirect } from 'next/navigation'
 
 async function ProfilePage() {
     const user = await fetchVerifyRoute()
-    console.log('ProfilePage run...', user)
 
     if(!user) redirect('/not-found')
     

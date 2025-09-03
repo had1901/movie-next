@@ -205,11 +205,11 @@ function DetailMovie() {
     }
 
   return (
-    <div className='text-white mx-20'>
+    <div className='text-white lg:mx-20'>
       {/* <Breadcrumb breadcrumb={movie?.data?.breadCrumb}/> */}
       {/* <MetaData /> */}
       <div onClick={() => setShow(false)} className={`${show ? 'bg-black/60 backdrop-blur-sm opacity-100 origin-center cursor-pointer' : 'opacity-0 pointer-events-none'} fixed inset-0 transition-all duration-250 z-50`} >
-        <div className={`${show ? 'scale-100 opacity-100' : 'scale-85 opacity-0'} transition-all duration-300 absolute w-[60%] h-[70%] bg-black inset-0 m-auto rounded-md overflow-hidden`}>
+        <div className={`${show ? 'scale-100 opacity-100' : 'scale-85 opacity-0'} transition-all duration-300 absolute aspect-video bg-black inset-0 xl:inset-20 m-auto rounded-md overflow-hidden`}>
           <iframe 
             src={getYoutubeEmbedUrl(movie?.data?.item?.trailer_url)} 
             className='w-full h-full'
@@ -218,14 +218,13 @@ function DetailMovie() {
           />
         </div>
       </div>
-      <section className='relative h-[800px] w-full aspect-video '>
+      <section className='relative w-full aspect-video md:h-[500px] xl:h-[800px]'>
         <div className=''><StreamingPlayer /></div>
         <div className={`${movieLink ? 'hidden' : 'relative w-full h-full'}`} style={styleCustomY}>
           {img.length > 0 && domainImages() !== '/' ? 
           (<Image 
               src={`${domainImages()}${img[Math.floor(Math.random() * Math.min(img.length, 10))]}`} 
               fill 
-              sizes='100%' 
               alt={`Poster ${movie?.data?.item?.poster_url || 'movie'}`} 
               blurDataURL={`${domainImages()}${img[Math.floor(Math.random() * Math.min(img.length, 10))]}`}
               className='object-cover w-full h-full'
@@ -249,7 +248,6 @@ function DetailMovie() {
                   : "/fallback.png"
               }
               fill 
-              sizes='100%' 
               alt={`Poster ${movie?.data?.item?.poster_url || 'movie'}`} 
               className='object-cover w-full h-full'
               style={{
@@ -270,154 +268,157 @@ function DetailMovie() {
         </div>
         
         <div className={`${movieLink ? 'mt-10' : 'absolute top-[75%]'} transition-all duration-500`}>
-          <div className='flex flex-wrap px-4 py-8'>
-            <div className='w-3/4 max-w-full flex flex-wrap min-w-0 overflow-hidden h-fit border-r-2 border-(--border-color) px-4'>
-              <div className='w-full flex gap-1 pb-10'>
-                <div className='flex 1 w-[180px] h-[280px] relative py-4'>
-                  {/* Thumbnail image code here */}
-                  <Image 
-                    src={
-                        movie?.data?.APP_DOMAIN_CDN_IMAGE && movie?.data?.item?.thumb_url
-                        ? `${movie.data.APP_DOMAIN_CDN_IMAGE}/uploads/movies/${movie.data.item.thumb_url}`
-                        : "/fallback.png"
-                    }
-                    fill
-                    sizes='100%'
-                    placeholder="blur"
-                    blurDataURL={
-                      movie?.data?.APP_DOMAIN_CDN_IMAGE && movie?.data?.item?.thumb_url
-                        ? `${movie.data.APP_DOMAIN_CDN_IMAGE}/uploads/movies/${movie.data.item.thumb_url}`
-                        : "/fallback.png"
-                    }
-                    alt='Thumbnail Movie'
-                    style={{objectFit: "cover"}}
-                    className='rounded-2xl'
-                    priority
-                  />
-                </div>
-                <div className={`${movieLink ? '' : 'bg-gradient-to-b from-(--bg-sub) to-transparent backdrop-blur-sm'} flex-2 shrink-0 p-4 rounded-2xl`}>
-                  <h2 className='text-[22px] font-semibold bg-gradient-to-r from-(--bg-main-color) to-white bg-clip-text text-transparent'>
-                    {movie?.data?.item?.name || movie?.item?.name || 'Đang tải...'}
-                  </h2>
-                  <h3>{movie?.data?.item?.origin_name || movie?.item?.origin_name}</h3>
-                  
-                  <ul className='flex gap-2 mt-4 text-xs'>
-                    <li className='flex items-start gap-1 border rounded py-1 px-2 border-(--bg-main-color) '>
-                      <span className='text-(--bg-main-color)'>IMDB</span>
-                      <span>{movie?.data?.item?.imdb?.vote_average || 'N/A'}</span>
-                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="var(--bg-main-color)" className="size-3.5">
-                        <path fillRule="evenodd" d="M8 1.75a.75.75 0 0 1 .692.462l1.41 3.393 3.664.293a.75.75 0 0 1 .428 1.317l-2.791 2.39.853 3.575a.75.75 0 0 1-1.12.814L7.998 12.08l-3.135 1.915a.75.75 0 0 1-1.12-.814l.852-3.574-2.79-2.39a.75.75 0 0 1 .427-1.318l3.663-.293 1.41-3.393A.75.75 0 0 1 8 1.75Z" clipRule="evenodd" />
-                      </svg>
-                    </li>
-                    <li className='border rounded py-1 px-2 '>{movie?.data?.item?.year || movie?.item?.year}</li>
-                    <li className='border rounded py-1 px-2'>
-                      {movie?.data?.item?.episode_total == 1 || movie?.item?.episode_total == 1 ? 'Full' : (movie?.data?.item?.episode_total || movie?.item?.episode_total)}
-                    </li>
-                    <li className='border rounded py-1 px-2'>
-                      {`${movie?.data?.item?.lang || movie?.item?.lang} + ${movie?.data?.item?.quality || movie?.item?.quality}`}
-                    </li>
-                  </ul>
-                  
-                  <ul className='flex items-center gap-2 mt-3'>
-                    {(movie?.data?.item?.category || movie?.item?.category || []).map((item: any, index: number) => (
-                      <li key={index} className='bg-(--bg-label) rounded py-1 px-2 text-xs'>{item?.name}</li>
-                    ))}
-                  </ul>
-                  
-                  <div className='text-sm mt-6'>
-                    <label className='mt-2'>
-                      {(movie?.data?.item?.episode_current || movie?.item?.episode_current) === 'Trailer' 
-                        ? (<span className='text-[#111111] text-sm bg-(--bg-main-color) py-1 px-2 rounded-md'>Chưa phát hành</span>)
-                        : (<span className={`${(movie?.data?.item?.status || movie?.item?.status) === 'completed' ? 'bg-[#23d372]/20 text-[#00df64]' : 'bg-(--bg-main-color) text-[#0e0e0e]'} inline-block text-sm py-[6px] px-3 rounded-md`}>
-                            {(movie?.data?.item?.status || movie?.item?.status) === 'completed'
-                              ? (<span className='flex items-center gap-2'>
-                                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" className="size-4">
-                                    <path fillRule="evenodd" d="M15 8c0 .982-.472 1.854-1.202 2.402a2.995 2.995 0 0 1-.848 2.547 2.995 2.995 0 0 1-2.548.849A2.996 2.996 0 0 1 8 15a2.996 2.996 0 0 1-2.402-1.202 2.995 2.995 0 0 1-2.547-.848 2.995 2.995 0 0 1-.849-2.548A2.996 2.996 0 0 1 1 8c0-.982.472-1.854 1.202-2.402a2.995 2.995 0 0 1 .848-2.547 2.995 2.995 0 0 1 2.548-.849A2.995 2.995 0 0 1 8 1c.982 0 1.854.472 2.402 1.202a2.995 2.995 0 0 1 2.547.848c.695.695.978 1.645.849 2.548A2.996 2.996 0 0 1 15 8Zm-3.291-2.843a.75.75 0 0 1 .135 1.052l-4.25 5.5a.75.75 0 0 1-1.151.043l-2.25-2.5a.75.75 0 1 1 1.114-1.004l1.65 1.832 3.7-4.789a.75.75 0 0 1 1.052-.134Z" clipRule="evenodd" />
-                                  </svg>
-                                  <span>Đã hoàn thành: {movie?.data?.item?.episode_current || movie?.item?.episode_current}</span>
-                                </span>)
-                              : (<span className='flex items-center gap-2'>
-                                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" className="size-4">
-                                    <path fillRule="evenodd" d="M2 4.25A2.25 2.25 0 0 1 4.25 2h7.5A2.25 2.25 0 0 1 14 4.25v5.5A2.25 2.25 0 0 1 11.75 12h-1.312c.1.128.21.248.328.36a.75.75 0 0 1 .234.545v.345a.75.75 0 0 1-.75.75h-4.5a.75.75 0 0 1-.75-.75v-.345a.75.75 0 0 1 .234-.545c.118-.111.228-.232.328-.36H4.25A2.25 2.25 0 0 1 2 9.75v-5.5Zm2.25-.75a.75.75 0 0 0-.75.75v4.5c0 .414.336.75.75.75h7.5a.75.75 0 0 0 .75-.75v-4.5a.75.75 0 0 0-.75-.75h-7.5Z" clipRule="evenodd" />
-                                  </svg>
-                                  <span>{`Đang chiếu: ${movie?.data?.item?.episode_current || movie?.item?.episode_current}`}</span>
-                                </span>)
-                            }
-                          </span>)
+          <div className='flex flex-wrap gap-2 2xl:gap-0 px-4 py-8'>
+
+            <div className='w-full 2xl:w-3/4 flex flex-wrap 2xl:overflow-hidden h-fit 2xl:border-r-2 border-(--border-color) px-0 xl:px-4'>
+              <div className='w-full shrink-0 flex flex-wrap gap-3 xl:gap-1 pb-3 xl:pb-10'>
+                
+                <div className={`${movieLink ? '' : 'bg-gradient-to-b from-(--bg-sub) to-transparent backdrop-blur-sm'} w-full flex gap-4 xl:flex-3 xl:p-4 rounded-2xl`}>
+                  <div className='shrink-0 w-[120px] h-[180px] lg:w-[180px] lg:h-[280px] relative py-4'>
+                    <Image 
+                      src={
+                          movie?.data?.APP_DOMAIN_CDN_IMAGE && movie?.data?.item?.thumb_url
+                          ? `${movie.data.APP_DOMAIN_CDN_IMAGE}/uploads/movies/${movie.data.item.thumb_url}`
+                          : "/fallback.png"
                       }
-                    </label>
-                    <label className='block mt-3'>
-                      <span>Thời lượng: </span> 
-                      <span className='text-(--bg-main-color) font-semibold rounded'>
-                        {movie?.data?.item?.time || movie?.item?.time}
-                      </span>
-                    </label>
-                    <label className='block mt-1'>
-                      <span>Tổng: </span> 
-                      <span className='text-(--bg-main-color) font-semibold rounded '>
-                        {movie?.data?.item?.episode_total || movie?.item?.episode_total}
-                      </span>
-                    </label>
+                      fill
+                      placeholder="blur"
+                      blurDataURL={
+                        movie?.data?.APP_DOMAIN_CDN_IMAGE && movie?.data?.item?.thumb_url
+                          ? `${movie.data.APP_DOMAIN_CDN_IMAGE}/uploads/movies/${movie.data.item.thumb_url}`
+                          : "/fallback.png"
+                      }
+                      alt='Thumbnail Movie'
+                      style={{objectFit: "cover"}}
+                      className='rounded-2xl'
+                      priority
+                    />
+                  </div>
+                  <div>
+                    <h2 className='text-base xl:text-[22px] font-semibold bg-gradient-to-r from-(--bg-main-color) to-white bg-clip-text text-transparent'>
+                      {movie?.data?.item?.name || movie?.item?.name || 'Đang tải...'}
+                    </h2>
+                    <h3 className='text-xs xl:text-base'>{movie?.data?.item?.origin_name || movie?.item?.origin_name}</h3>
+                    
+                    <ul className='flex flex-wrap gap-2 mt-2 xl:mt-4 text-[10px] xl:text-xs'>
+                      <li className='flex items-start gap-1 border rounded py-1 px-2 border-(--bg-main-color) '>
+                        <span className='text-(--bg-main-color)'>IMDB</span>
+                        <span>{movie?.data?.item?.imdb?.vote_average || 'N/A'}</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="var(--bg-main-color)" className="size-3.5">
+                          <path fillRule="evenodd" d="M8 1.75a.75.75 0 0 1 .692.462l1.41 3.393 3.664.293a.75.75 0 0 1 .428 1.317l-2.791 2.39.853 3.575a.75.75 0 0 1-1.12.814L7.998 12.08l-3.135 1.915a.75.75 0 0 1-1.12-.814l.852-3.574-2.79-2.39a.75.75 0 0 1 .427-1.318l3.663-.293 1.41-3.393A.75.75 0 0 1 8 1.75Z" clipRule="evenodd" />
+                        </svg>
+                      </li>
+                      <li className='border rounded py-1 px-2 '>{movie?.data?.item?.year || movie?.item?.year}</li>
+                      <li className='border rounded py-1 px-2'>
+                        {movie?.data?.item?.episode_total == 1 || movie?.item?.episode_total == 1 ? 'Full' : (movie?.data?.item?.episode_total || movie?.item?.episode_total)}
+                      </li>
+                      <li className='border rounded py-1 px-2'>
+                        {`${movie?.data?.item?.lang || movie?.item?.lang} + ${movie?.data?.item?.quality || movie?.item?.quality}`}
+                      </li>
+                    </ul>
+                    
+                    <ul className='flex items-center gap-2 mt-3'>
+                      {(movie?.data?.item?.category || movie?.item?.category || []).map((item: any, index: number) => (
+                        <li key={index} className='bg-(--bg-label) rounded py-1 px-2 text-xs'>{item?.name}</li>
+                      ))}
+                    </ul>
+                    
+                    <div className='text-[10px] xl:text-sm mt-2 xl:mt-6'>
+                      <label className='mt-2'>
+                        {(movie?.data?.item?.episode_current || movie?.item?.episode_current) === 'Trailer' 
+                          ? (<span className='text-[#111111] bg-(--bg-main-color) py-1 px-2 rounded-md'>Chưa phát hành</span>)
+                          : (<span className={`${(movie?.data?.item?.status || movie?.item?.status) === 'completed' ? 'bg-[#23d372]/20 text-[#00df64]' : 'bg-(--bg-main-color) text-[#0e0e0e]'} inline-block text-[10px] xl:text-sm py-[6px] px-3 rounded-md`}>
+                              {(movie?.data?.item?.status || movie?.item?.status) === 'completed'
+                                ? (<span className='flex items-center gap-2'>
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" className="size-4">
+                                      <path fillRule="evenodd" d="M15 8c0 .982-.472 1.854-1.202 2.402a2.995 2.995 0 0 1-.848 2.547 2.995 2.995 0 0 1-2.548.849A2.996 2.996 0 0 1 8 15a2.996 2.996 0 0 1-2.402-1.202 2.995 2.995 0 0 1-2.547-.848 2.995 2.995 0 0 1-.849-2.548A2.996 2.996 0 0 1 1 8c0-.982.472-1.854 1.202-2.402a2.995 2.995 0 0 1 .848-2.547 2.995 2.995 0 0 1 2.548-.849A2.995 2.995 0 0 1 8 1c.982 0 1.854.472 2.402 1.202a2.995 2.995 0 0 1 2.547.848c.695.695.978 1.645.849 2.548A2.996 2.996 0 0 1 15 8Zm-3.291-2.843a.75.75 0 0 1 .135 1.052l-4.25 5.5a.75.75 0 0 1-1.151.043l-2.25-2.5a.75.75 0 1 1 1.114-1.004l1.65 1.832 3.7-4.789a.75.75 0 0 1 1.052-.134Z" clipRule="evenodd" />
+                                    </svg>
+                                    <span>Đã hoàn thành: {movie?.data?.item?.episode_current || movie?.item?.episode_current}</span>
+                                  </span>)
+                                : (<span className='flex items-center gap-2'>
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" className="size-4">
+                                      <path fillRule="evenodd" d="M2 4.25A2.25 2.25 0 0 1 4.25 2h7.5A2.25 2.25 0 0 1 14 4.25v5.5A2.25 2.25 0 0 1 11.75 12h-1.312c.1.128.21.248.328.36a.75.75 0 0 1 .234.545v.345a.75.75 0 0 1-.75.75h-4.5a.75.75 0 0 1-.75-.75v-.345a.75.75 0 0 1 .234-.545c.118-.111.228-.232.328-.36H4.25A2.25 2.25 0 0 1 2 9.75v-5.5Zm2.25-.75a.75.75 0 0 0-.75.75v4.5c0 .414.336.75.75.75h7.5a.75.75 0 0 0 .75-.75v-4.5a.75.75 0 0 0-.75-.75h-7.5Z" clipRule="evenodd" />
+                                    </svg>
+                                    <span>{`Đang chiếu: ${movie?.data?.item?.episode_current || movie?.item?.episode_current}`}</span>
+                                  </span>)
+                              }
+                            </span>)
+                        }
+                      </label>
+                      <label className='block mt-3'>
+                        <span>Thời lượng: </span> 
+                        <span className='text-(--bg-main-color) font-semibold rounded'>
+                          {movie?.data?.item?.time || movie?.item?.time}
+                        </span>
+                      </label>
+                      <label className='block mt-1'>
+                        <span>Tổng: </span> 
+                        <span className='text-(--bg-main-color) font-semibold rounded '>
+                          {movie?.data?.item?.episode_total || movie?.item?.episode_total}
+                        </span>
+                      </label>
+                    </div>
                   </div>
                 </div>
-              <div className='flex-2 shrink-0'>
-                  <div className={`${movieLink ? 'hidden' : ''} flex items-center px-3 mb-1 h-20 bg-(--bg-sub) backdrop-blur-sm py-4 rounded-2xl`}>
-                    <button className='flex flex-1 items-center justify-center gap-2 min-w-[120px] text-(--text-main-yellow) w-fit p-3 rounded-full cursor-pointer'>
-                      <i>
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="size-4">
-                          <path d="M6.3 2.84A1.5 1.5 0 0 0 4 4.11v11.78a1.5 1.5 0 0 0 2.3 1.27l9.344-5.891a1.5 1.5 0 0 0 0-2.538L6.3 2.841Z" />
-                        </svg>
-                      </i>
-                      <Link href={'#episodes'} style={{ scrollBehavior: 'smooth' }} className='font-semibold'>Xem ngay</Link>
-                    </button >
-                    <button onClick={() => setShow(true)} className='flex flex-1 items-center justify-center gap-2 min-w-[120px] w-fit p-3 rounded-full cursor-pointer'>
-                      <i>
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="size-4">
-                          <path d="M3.25 4A2.25 2.25 0 0 0 1 6.25v7.5A2.25 2.25 0 0 0 3.25 16h7.5A2.25 2.25 0 0 0 13 13.75v-7.5A2.25 2.25 0 0 0 10.75 4h-7.5ZM19 4.75a.75.75 0 0 0-1.28-.53l-3 3a.75.75 0 0 0-.22.53v4.5c0 .199.079.39.22.53l3 3a.75.75 0 0 0 1.28-.53V4.75Z" />
-                        </svg>
-                      </i>
-                      <label className='cursor-pointer'>Trailer</label>
-                    </button>
-                    <button className='flex flex-1 items-center justify-center gap-2 min-w-[120px] w-fit p-3 rounded-full cursor-pointer'>
-                      {hasFavorite 
-                      ? (
-                        <div onClick={handleRemoveFavorite} className='flex items-center justify-center gap-2'>
-                          <i className='text-[#e20116]'>
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="size-4">
-                              <path d="m11.645 20.91-.007-.003-.022-.012a15.247 15.247 0 0 1-.383-.218 25.18 25.18 0 0 1-4.244-3.17C4.688 15.36 2.25 12.174 2.25 8.25 2.25 5.322 4.714 3 7.688 3A5.5 5.5 0 0 1 12 5.052 5.5 5.5 0 0 1 16.313 3c2.973 0 5.437 2.322 5.437 5.25 0 3.925-2.438 7.111-4.739 9.256a25.175 25.175 0 0 1-4.244 3.17 15.247 15.247 0 0 1-.383.219l-.022.012-.007.004-.003.001a.752.752 0 0 1-.704 0l-.003-.001Z" />
-                            </svg>
-                          </i>
-                          <Link href={'#'}>Đã thích</Link>
-                        </div>
-                      ) : (
-                        <div onClick={handleAddFavorite} className='flex items-center justify-center gap-2'>
-                          <i>
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-4">
-                              <path strokeLinecap="round" strokeLinejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z" />
-                            </svg>
-                          </i>
-                          <Link href={'#'}>Yêu thích</Link>
-                        </div>
-                      )}
-                    </button>
-                    <button className='flex flex-1 items-center justify-center gap-2 min-w-[120px] w-fit p-3 rounded-full cursor-pointer'>
-                      <i>
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-4">
-                          <path strokeLinecap="round" strokeLinejoin="round" d="M7.217 10.907a2.25 2.25 0 1 0 0 2.186m0-2.186c.18.324.283.696.283 1.093s-.103.77-.283 1.093m0-2.186 9.566-5.314m-9.566 7.5 9.566 5.314m0 0a2.25 2.25 0 1 0 3.935 2.186 2.25 2.25 0 0 0-3.935-2.186Zm0-12.814a2.25 2.25 0 1 0 3.933-2.185 2.25 2.25 0 0 0-3.933 2.185Z" />
-                        </svg>
-                      </i>
-                     <Link href={'#'} onClick={handleShare}>Chia sẻ</Link>
-                    </button>
-                  </div>
-                  <div className={`${movieLink ? '' : 'bg-gradient-to-b from-(--bg-sub) to-transparent backdrop-blur-sm'} px-3 py-4 rounded-2xl`}>
-                      <h3 className='text-lg mb-1'>Giới thiệu</h3>
-                      <Content content={movie?.data?.item?.content} />
-                  </div>
+                <div className='flex-2'>
+                    <div className={`${movieLink ? 'hidden' : ''} flex flex-wrap items-center text-sm xl:text-base p-3 mb-1 h-auto bg-gradient-to-b from-(--bg-sub) to-transparent backdrop-blur-sm rounded-2xl`}>
+                      <button className='flex flex-1 items-center justify-center gap-2 min-w-[120px] text-(--text-main-yellow) w-fit p-3 rounded-full cursor-pointer'>
+                        <i>
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="size-4">
+                            <path d="M6.3 2.84A1.5 1.5 0 0 0 4 4.11v11.78a1.5 1.5 0 0 0 2.3 1.27l9.344-5.891a1.5 1.5 0 0 0 0-2.538L6.3 2.841Z" />
+                          </svg>
+                        </i>
+                        <Link href={'#episodes'} style={{ scrollBehavior: 'smooth' }} className='font-semibold'>Xem ngay</Link>
+                      </button >
+                      <button onClick={() => setShow(true)} className='flex flex-1 items-center justify-center gap-2 min-w-[120px] w-fit p-3 rounded-full cursor-pointer'>
+                        <i>
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="size-4">
+                            <path d="M3.25 4A2.25 2.25 0 0 0 1 6.25v7.5A2.25 2.25 0 0 0 3.25 16h7.5A2.25 2.25 0 0 0 13 13.75v-7.5A2.25 2.25 0 0 0 10.75 4h-7.5ZM19 4.75a.75.75 0 0 0-1.28-.53l-3 3a.75.75 0 0 0-.22.53v4.5c0 .199.079.39.22.53l3 3a.75.75 0 0 0 1.28-.53V4.75Z" />
+                          </svg>
+                        </i>
+                        <label className='cursor-pointer'>Trailer</label>
+                      </button>
+                      <button className='flex flex-1 items-center justify-center gap-2 min-w-[120px] w-fit p-3 rounded-full cursor-pointer'>
+                        {hasFavorite 
+                        ? (
+                          <div onClick={handleRemoveFavorite} className='flex items-center justify-center gap-2'>
+                            <i className='text-[#e20116]'>
+                              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="size-4">
+                                <path d="m11.645 20.91-.007-.003-.022-.012a15.247 15.247 0 0 1-.383-.218 25.18 25.18 0 0 1-4.244-3.17C4.688 15.36 2.25 12.174 2.25 8.25 2.25 5.322 4.714 3 7.688 3A5.5 5.5 0 0 1 12 5.052 5.5 5.5 0 0 1 16.313 3c2.973 0 5.437 2.322 5.437 5.25 0 3.925-2.438 7.111-4.739 9.256a25.175 25.175 0 0 1-4.244 3.17 15.247 15.247 0 0 1-.383.219l-.022.012-.007.004-.003.001a.752.752 0 0 1-.704 0l-.003-.001Z" />
+                              </svg>
+                            </i>
+                            <Link href={'#'}>Đã thích</Link>
+                          </div>
+                        ) : (
+                          <div onClick={handleAddFavorite} className='flex items-center justify-center gap-2'>
+                            <i>
+                              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-4">
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z" />
+                              </svg>
+                            </i>
+                            <Link href={'#'}>Yêu thích</Link>
+                          </div>
+                        )}
+                      </button>
+                      <button className='flex flex-1 items-center justify-center gap-2 min-w-[120px] w-fit p-3 rounded-full cursor-pointer'>
+                        <i>
+                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-4">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M7.217 10.907a2.25 2.25 0 1 0 0 2.186m0-2.186c.18.324.283.696.283 1.093s-.103.77-.283 1.093m0-2.186 9.566-5.314m-9.566 7.5 9.566 5.314m0 0a2.25 2.25 0 1 0 3.935 2.186 2.25 2.25 0 0 0-3.935-2.186Zm0-12.814a2.25 2.25 0 1 0 3.933-2.185 2.25 2.25 0 0 0-3.933 2.185Z" />
+                          </svg>
+                        </i>
+                      <Link href={'#'} onClick={handleShare}>Chia sẻ</Link>
+                      </button>
+                    </div>
+                    <div className={`${movieLink ? '' : 'bg-gradient-to-b from-(--bg-sub) to-transparent backdrop-blur-sm'} px-3 py-4 rounded-2xl`}>
+                        <h3 className='text-lg mb-1'>Giới thiệu</h3>
+                        <Content content={movie?.data?.item?.content} />
+                    </div>
+                </div>
               </div>
-              </div>
+
               <Episode movie={movie} />
 
-              <ListMovie title='Có thể bạn sẽ thích' spacing='mt-14'>
+              {/* <ListMovie title='Có thể bạn sẽ thích' spacing='mt-14'>
                 <div className='w-full grid grid-cols-6 gap-3 flex-wrap'>
                     {home?.data?.items?.map((item: any, index: number) => (
                           <MovieCard 
@@ -429,13 +430,13 @@ function DetailMovie() {
                           />
                     ))}
                 </div>
-              </ListMovie>
+              </ListMovie> */}
             </div>
 
             
 
             {/* Diễn viên */}
-            <div className='w-1/4'>
+            <div className='w-full 2xl:w-1/4 shrink-0 mt-3 xl:mt-0'>
               <h3 className='text-2xl mb-8 text-center'>Diễn viên</h3>
               <ul className='flex items-center flex-wrap gap-4 px-4'>
                 {actors?.success && actors?.data?.peoples?.length > 0 && actors.data.peoples.slice(0,12).map((actor: any, index: number) => (
@@ -455,6 +456,7 @@ function DetailMovie() {
                 ))}
               </ul>
             </div>
+
           </div>
         </div>
       </section>

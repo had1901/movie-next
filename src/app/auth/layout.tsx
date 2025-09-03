@@ -25,10 +25,10 @@ async function AccountLayout({ children }:{ children: ReactNode }) {
           disableRotation={false}
         />
       </div>
-      <div className='container mx-auto mt-28'>
-          <div className="flex text-white gap-2">
+      <div className='container mx-auto mt-20 lg:mt-28'>
+          <div className="flex flex-wrap text-white gap-2">
               <Sidebar />
-              <div className='relative flex-1 px-8'>
+              <div className='relative w-full flex-1 lg:px-8'>
                 <Suspense fallback={<div>Đang tải...</div>}>
                   {children}
                 </Suspense>

@@ -19,7 +19,7 @@ type Props = {
 function ButtonViewDetail({ icon, label, type, originalURL, slug }: Props) {
   
   return (
-    <Link href={`/detail-movie/${slug}`} style={{ background: 'var(--bg-main-color)'}} className='flex items-center justify-center gap-3 cursor-pointer w-18 h-18 rounded-full hover:bg-[#141414]/60 hover:opacity-80 transition mt-4'>
+    <Link href={`/detail-movie/${slug}`} style={{ background: 'var(--bg-main-color)'}} className='flex items-center justify-center gap-3 cursor-pointer w-10 h-10 lg:w-18 lg:h-18 rounded-full hover:bg-[#141414]/60 hover:opacity-80 transition'>
       <i className='text-[#292929]'>
         {icon}
       </i>

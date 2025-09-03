@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import React, { MouseEvent, MouseEventHandler } from 'react'
 
+
 function SubMenu({ data, type }: { data: any, type: string }) {
   const router = useRouter()
 

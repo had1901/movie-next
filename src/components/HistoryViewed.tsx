@@ -32,13 +32,31 @@ function HistoryViewed() {
             <Swiper 
                 modules={[Pagination, Navigation]}
                 spaceBetween={10}
-                slidesPerView={6} 
+                slidesPerView={2.5} 
                 grabCursor    
                 scrollbar={{ draggable: true }}
                 className='h-full'
                 navigation={{
                     // nextEl: '.swiper-button-next-slider',
                     // prevEl: '.swiper-button-prev-slider',
+                }}
+                breakpoints={{
+                    320: {
+                        slidesPerView: 2.5, // mobile nhỏ
+                        spaceBetween: 4,
+                    },
+                    640: {
+                        slidesPerView: 4.5, // tablet
+                        spaceBetween: 6,
+                    },
+                    1024: {
+                        slidesPerView: 6.5, // desktop
+                        spaceBetween: 8,
+                    },
+                    1440: {
+                        slidesPerView: 8.5, // màn hình lớn
+                        spaceBetween: 10,
+                    },
                 }}
             >
                 {movies.length > 0 && movies.map((movie: any, index: number) => (

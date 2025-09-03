@@ -48,10 +48,10 @@ export default async function Home() {
   return (
     <div className="w-full">
       
-      <div className="px-10">
+      <div className="">
         <Slider result={comingMovies} hasMark ratio="aspect-[2/3]"/>
       </div>
-      <div className="container mx-auto">
+      <div className="container mx-auto px-3 xl:px-0">
       
       {/* <div className='fixed inset-0'>
           <DotGrid
@@ -88,17 +88,17 @@ export default async function Home() {
         <SwiperCarousel movies={tvMovies} />
       </ListMovie>
 
-      <section className="rounded-2xl bg-gradient-to-b from-(--bg-sub) to-bg-transparent h-auto mt-10 p-[40px] ">
+      <section className="rounded-2xl bg-gradient-to-b from-(--bg-sub) to-bg-transparent h-auto mt-4 lg:mt-10 p-4 lg:p-10 ">
         <HeroMovie title="Phim Hàn Quốc mới" styleCustom="from-(--text-main-yellow) to-[#9457ff]"> 
-          <SwiperCarousel movies={koreanMovies} slidesPerView={5} ratio="aspect-[16/9]" isBackdrop/>
+          <SwiperCarousel movies={koreanMovies} ratio="aspect-[16/9]" isBackdrop/>
         </HeroMovie>
 
         <HeroMovie title="Phim Trung Quốc mới" styleCustom="from-(--text-main-yellow) to-[#2d71f0]"> 
-          <SwiperCarousel movies={chinaMovies} slidesPerView={5} ratio="aspect-[16/9]" isBackdrop/>
+          <SwiperCarousel movies={chinaMovies} ratio="aspect-[16/9]" isBackdrop/>
         </HeroMovie>
 
         <HeroMovie title="Phim US-UK mới" styleCustom="from-(--text-main-yellow) to-[#e60c66]"> 
-          <SwiperCarousel movies={usukMovies} slidesPerView={5} ratio="aspect-[16/9]" isBackdrop/>
+          <SwiperCarousel movies={usukMovies} ratio="aspect-[16/9]" isBackdrop/>
         </HeroMovie>
       </section>
 

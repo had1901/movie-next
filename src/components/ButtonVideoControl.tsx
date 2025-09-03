@@ -24,7 +24,7 @@ const ButtonVideoControl = ({
 
   return (
     <button 
-        className={`${light ? 'bg-(--bg-main-color)/90 text-(--text-main-color) px-2 py-2 rounded' : ''} cursor-pointer flex items-center gap-1`} 
+        className={`${light ? 'bg-(--bg-main-color)/90 text-(--text-main-color) px-2 py-2 rounded' : ''} text-[10px] xl:text-base cursor-pointer flex items-center whitespace-nowrap xl:gap-1`} 
         onClick={onclick}
     >
         <i>{icon}</i>

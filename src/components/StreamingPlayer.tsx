@@ -28,7 +28,7 @@ function StreamingPlayer() {
   if(movieLink) {
     return ( 
       <div className={`${light ? 'fixed inset-0 bg-black z-30' : 'bg-black'} rounded-t-2xl mt-4 transition-all duration-200`}>
-        <div className={`${light ? 'absolute w-full' : ''} aspect-16/9 w-[70%] h-[80%] mx-auto mt-16 transition-all duration-200`}>
+        <div className={`${light ? 'absolute w-full' : ''} aspect-16/9 w-full xl:w-[70%] mx-auto mt-16 transition-all duration-200`}>
           <iframe 
             ref={videoRef}
             src={movieLink} 
@@ -36,7 +36,7 @@ function StreamingPlayer() {
             allowFullScreen
             className='w-full h-full object-cover'
           ></iframe>
-          <div className='absolute top-100% left-0 right-0 flex justify-center gap-10 bg-black/80 backdrop-blur-2xl p-4 rounded-b-2xl font-normal'>
+          <div className='absolute top-100% left-0 right-0 flex justify-center gap-10 bg-black/80 backdrop-blur-2xl p-4 xl:rounded-b-2xl font-normal'>
             <ButtonVideoControl title='Yêu thích' icon={icon1} />
             <ButtonVideoControl title='Chế độ rạp phim' icon={icon2} />
             <ButtonVideoControl title='10s' icon={icon2} />

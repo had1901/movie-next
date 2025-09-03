@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 'use client'
-import React from 'react'
+import React, { useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useAuth, useNotification } from '@/store/store'
@@ -48,6 +48,7 @@ function User() {
   const loading = useAuth(state => state.loading)
   const toast = useNotification(state => state.toast)
   const reset = useNotification(state => state.reset)
+  const [show, setShow] = useState(false)
 
   const handleLogout = async () => {
     await logoutFireBase()
@@ -56,42 +57,44 @@ function User() {
     redirect('/')
   }
 
+  const handleShow = () => {
+    setShow(!show)
+    console.log('okk')
+  }
 
   if (loading) {
     return <div className='text-center text-md text-white'>Đang tải...</div>;
   }
 
   return (
-    <div className='text-white'>
-
+    <div className='text-white' >
       {user 
-      ? (<div className='relative group '>
-          <Image src={user.photoURL || 'https://avatar.iran.liara.run/public/7'} alt="avatar" width={36} height={36} className='rounded-full cursor-pointer' />
-          <div className='absolute left-0 right-0 top-full p-3 bg-[#494949]/80 backdrop-blur-2xl 
-                          rounded-md w-[200px] h-auto transition duration-200 origin-top-left 
-                          pointer-events-none opacity-0 scale-85 group-hover:opacity-100 
-                          group-hover:scale-100 group-hover:pointer-events-auto'>
-            <h2 className=' text-center line-clamp-2 font-semibold bg-clip-text text-transparent bg-gradient-to-r from-[#ff5e69] to-[#ffd694] rounded-sm'>
-              <span>&#x2764;</span>
-              <span className='mx-2 inline-block'>{user.displayName} </span>
-              <span>&#x2764;</span>
-            </h2>
-            <ul className='pt-2 text-sm'>
-              {modals.map((modal:any, index:number) => (
-                <li key={index}>
-                  <Link href={modal.href || '#'} className='flex items-center gap-2 py-3' onClick={() => modal?.render(handleLogout)}>
-                    <i>
-                      {modal.icon}
-                    </i>
-                    <span>{modal.name}</span>
-                  </Link>
-                </li>
-
-              ))}
-            </ul>
-          </div>
+      ? (<div className='relative w-[36px] h-full' onClick={handleShow}>
+            <Image src={user.photoURL || 'https://avatar.iran.liara.run/public/7'} alt="avatar" width={36} height={36} className='rounded-full cursor-pointer' />
+            <div className={`${show ? 'block' : 'hidden'} absolute right-0 top-full mt-3 p-3 bg-[#494949]/80 backdrop-blur-2xl 
+                            rounded-md w-[200px] h-auto transition duration-200 `}
+            >
+              <h2 className=' text-center line-clamp-2 font-semibold bg-clip-text text-transparent bg-gradient-to-r from-[#ff5e69] to-[#ffd694] rounded-sm'>
+                <span>&#x2764;</span>
+                <span className='mx-2 inline-block'>{user.displayName} </span>
+                <span>&#x2764;</span>
+              </h2>
+              <ul className='pt-2 text-sm'>
+                {modals.map((modal:any, index:number) => (
+                  <li key={index}>
+                    <Link href={modal.href || '#'} className='flex items-center gap-2 py-3' onClick={() => modal?.render(handleLogout)}>
+                      <i>
+                        {modal.icon}
+                      </i>
+                      <span>{modal.name}</span>
+                    </Link>
+                  </li>
+  
+                ))}
+              </ul>
+            </div>
         </div>)
-      : (<button onClick={() => setShowModal(true)} className="px-4 py-2 bg-(--bg-main-color) text-(--text-main-color) text-sm rounded-full hover:opacity-85 transition shadow cursor-pointer">
+      : (<button onClick={() => setShowModal(true)} className="px-4 py-2 bg-(--bg-opacity) text-white text-[10px] whitespace-nowrap lg:text-sm rounded-full hover:opacity-85 transition shadow cursor-pointer">
           Đăng nhập
         </button>)
       }

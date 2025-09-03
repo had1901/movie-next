@@ -4,10 +4,10 @@ import { NextRequest, NextResponse } from "next/server"
 export async function middleware(req: NextRequest) {
     const tokenCookie = req.cookies.get('session')
     const tokenId = tokenCookie?.value
-    console.log('middleware', tokenId)
+    // console.log('middleware', tokenId)
 
     if(!tokenId) {
-      console.log('Không có Token')
+      // console.log('Không có Token')
       return NextResponse.redirect(new URL("/not-found", req.url))
     }
     return NextResponse.next()

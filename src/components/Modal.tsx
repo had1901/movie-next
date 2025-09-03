@@ -81,7 +81,7 @@ function Modal() {
         >
           <div
             onClick={(e) => e.stopPropagation()} // Ngăn click trong modal đóng
-            className={`absolute inset-0 m-auto bg-white backdrop-blur-2xl rounded-xl shadow-2xl p-6 w-[500px] h-fit max-w-md transform transition-all duration-300 overflow-y-auto 
+            className={`absolute inset-0 my-auto mx-6 md:m-auto bg-white backdrop-blur-2xl rounded-xl shadow-2xl p-6 w-auto max-w-[500px] h-fit transform transition-all duration-300 overflow-y-auto 
               ${showModal ? "scale-100 opacity-100" : "scale-35 opacity-0 pointer-events-none"}`}
           >
             {openFormInput && (<button className='flex items-center gap-2 hover:opacity-80 cursor-pointer' onClick={backModal}>
@@ -118,7 +118,7 @@ function Modal() {
               <button
                 onClick={() => setOpenFormInput(true)}
                 className="relative border border-(--bg-sub) rounded-full px-4 py-2 transition 
-                opacity-80 hover:opacity-100 hover:bg-[#ffe5bb] hover:border-[#ffe5bb] cursor-pointer"
+                opacity-80 hover:opacity-100 hover:bg-[#d4d4d4] hover:border-[#d4d4d4] cursor-pointer"
               >
                 <Image src="/user-logo.svg" alt="logo-user" width={20} height={20}/>
                 <span className='absolute left-1/2 top-1/2 -translate-1/2'>Sử dụng Email / Password</span>
@@ -127,7 +127,7 @@ function Modal() {
               <button
                 onClick={() => handleLogin(providerGoogle)}
                 className="relative border border-(--bg-sub) rounded-full px-4 py-2 transition 
-                opacity-80 hover:opacity-100 hover:bg-[#ffe5bb] hover:border-[#ffe5bb] cursor-pointer"
+                opacity-80 hover:opacity-100 hover:bg-[#d4d4d4] hover:border-[#d4d4d4] cursor-pointer"
               >
                 <Image src="/gg-logo.svg" alt="logo-google" width={20} height={20}/>
                 <span className='absolute left-1/2 top-1/2 -translate-1/2'>Đăng nhập với Google</span>
@@ -136,7 +136,7 @@ function Modal() {
               <button
                 onClick={() => handleLogin(providerGithub)}
                 className="relative border border-(--bg-sub) rounded-full px-4 py-2 transition 
-                opacity-80 hover:opacity-100 hover:bg-[#ffe5bb] hover:border-[#ffe5bb] cursor-pointer"
+                opacity-80 hover:opacity-100 hover:bg-[#d4d4d4] hover:border-[#d4d4d4] cursor-pointer"
               >
                 <Image src="/github-logo.svg" alt="logo-github" width={20} height={20}/>
                 <span className='absolute left-1/2 top-1/2 -translate-1/2'>Đăng nhập với Github</span>

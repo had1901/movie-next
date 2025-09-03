@@ -18,17 +18,17 @@ export async function generateMetadata({ params, searchParams }: Props): Promise
     const result = await res.json()
 
     return {
-      title: result?.data.seoOnPage.titleHead,
-      description: result?.data.seoOnPage.descriptionHead,
-      keywords: result?.data.type_list || ['xem phim', 'phim lẻ', 'phim chiếu rạp', 'hoạt hình'], // hoặc tự define
+      title: result?.data?.seoOnPage?.titleHead || 'Movies',
+      description: result?.data?.seoOnPage?.descriptionHead || 'Movies',
+      keywords: result?.data?.type_list || ['xem phim', 'phim lẻ', 'phim chiếu rạp', 'hoạt hình'], // hoặc tự define
       openGraph: {
-        title: result?.data.titlePage,
-        description: result?.data.seoOnPage.descriptionHead,
+        title: result?.data?.titlePage || '',
+        description: result?.data?.seoOnPage?.descriptionHead || 'Movies',
         url: `https://your-domain.com/phim/${slug}`,
         siteName: 'Chill Movies',
         images: [
           {
-            url: result?.image || `https://img.ophim.live/${result.data.seoOnPage.og_image[Math.floor(Math.random() * result.data.seoOnPage.og_image.length)]}`,
+            url: result?.image || `https://img.ophim.live/${result?.data?.seoOnPage?.og_image[Math.floor(Math.random() * result?.data?.seoOnPage?.og_image?.length)]}`,
             width: 800,
             height: 600,
             alt: result?.title || 'Poster phim',
@@ -39,8 +39,8 @@ export async function generateMetadata({ params, searchParams }: Props): Promise
       },
       twitter: {
         card: 'summary_large_image',
-        title: result?.data.titlePage,
-        description: result?.data.seoOnPage.descriptionHead,
+        title: result?.data?.titlePage || 'Movies',
+        description: result?.data?.seoOnPage?.descriptionHead || 'Movies',
         images: [result?.data?.seoOnPage?.og_image],
       },
       metadataBase: new URL('https://your-domain.com'),
@@ -56,16 +56,16 @@ async function Category({ params, searchParams }: Props) {
 
 
   return (
-    <div className=' mx-auto mt-26 text-white rounded-xl p-6 px-10'>
+    <div className=' mx-auto mt-14 lg:mt-26 text-white rounded-xl p-6 px-2 lg:px-10'>
       <div className='flex justify-between'>
-        <h1 className='text-2xl font-semibold text-(--text-main-yellow)'>{data && data?.titlePage}</h1>
-        <div className='flex items-center'>
+        <h1 className='text-xl lg:text-2xl font-semibold text-(--text-main-yellow)'>{data && data?.titlePage}</h1>
+        <div className='flex items-center text-sm lg:text-base'>
           <span className='text-sm text-(--text-sub-color) mr-2'>Tổng: </span>
           <span>{data && data?.params?.pagination?.totalItems} phim</span>
           </div>
       </div>
-      <div className='mt-6'>
-        <ul className='grid grid-cols-8 gap-4'>
+      <div className='mt-2 lg:mt-6'>
+        <ul className='grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 xl:grid-cols-8 gap-1 sm:gap-2 md:gap-3 lg:gap-4'>
             {data?.items && data.items.length > 0 && data.items.map((item: any, index: number) => (
               <li key={item._id}>
                 <MovieCard item={item} imgDomain={data.APP_DOMAIN_CDN_IMAGE} index={index}/>
