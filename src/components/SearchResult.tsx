@@ -1,9 +1,18 @@
+'use client'
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import MovieCard from './MovieCard'
 import { createPortal } from 'react-dom'
 
 function SearchResult({ movies, keyword }:{ movies:any, keyword:string }) {
+
+  const [mounted, setMounted] = useState(false)
+
+  useEffect(() => {
+    setMounted(true)  // chỉ khi component mount ở client mới render portal
+  }, [])
+
+  if (!mounted) return null
   return createPortal(
     (<div
       className={`${keyword ? 'visible scale-100 opacity-100' : 'scale-0 opacity-0 invisible'} 
