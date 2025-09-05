@@ -101,15 +101,15 @@ export default async function RootLayout({ children, params }: Readonly<{ childr
     <html lang="en" data-theme="dark">
       <head>
         {/* Social */}
-        <Script
+        {/* <Script
           id="ad-script-1"
           type='text/javascript' 
           src='https://contributionabdicatemoral.com/95/a6/a6/95a6a6812d9b715ec0884cf458a2ed30.js'
           strategy="afterInteractive" 
-        />
+        /> */}
 
         {/* Banner */}
-         <Script id='ad-atoptions' strategy='beforeInteractive'>
+         {/* <Script id='ad-atoptions' strategy='beforeInteractive'>
           {`
             window.atOptions = {
               key: '3908418f6f62c51ffde39bc6cdc6b9d5',
@@ -119,21 +119,21 @@ export default async function RootLayout({ children, params }: Readonly<{ childr
               params: {}
             }
           `}
-        </Script>
+        </Script> */}
 
-        <Script
+        {/* <Script
           id='ad-invoke'
           src='https://contributionabdicatemoral.com/3908418f6f62c51ffde39bc6cdc6b9d5/invoke.js'
           strategy='beforeInteractive'
-        />
+        /> */}
         
         {/* Anti adblock */}
-        <Script
+        {/* <Script
           id="ad-script-2"
           type='text/javascript' 
           src='https://contributionabdicatemoral.com/3f/90/95/3f90956328c9d854501640734391bb15.jss'
           strategy="afterInteractive" 
-        />
+        /> */}
       </head>
       <body className={`${robotoFont.variable} ${nosiferFont.variable} antialiased dark:bg-[#292929]`}>
         <Alert>

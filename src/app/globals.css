@@ -294,3 +294,17 @@ canvas {
   /* background: radial-gradient(ellipse at bottom, #1b2735 0%, #090a0f 100%); */
   background: radial-gradient(ellipse at bottom, #212325 0%, #000000 100%);
 }
+
+
+/* scroll custom */
+.scroll-snap{
+  scroll-snap-type: y mandatory;
+  overflow-y: scroll;
+  scroll-behavior: smooth;
+  height: 100vh;
+}
+
+.section-snap {
+  scroll-snap-align: start;
+  height: 100vh;
+}
